@@ -3,7 +3,7 @@ output "current_user" {
 }
 
 output "databricks_spark_version" {
-  value = data.databricks_spark_version.latest
+  value = data.databricks_spark_version.latest_lts
 }
 
 output "databricks_node_type" {

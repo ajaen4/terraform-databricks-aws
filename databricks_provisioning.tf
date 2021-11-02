@@ -5,7 +5,7 @@ module "databricks_provisioning" {
   subnet_ids         = module.customer_managed_vpc.private_subnets
   vpc_id             = module.customer_managed_vpc.vpc_id
 
-  cross_account_role_arn = aws_iam_role.cross_account_role.arn
+  cross_account_role_arn = module.iam_roles.cross_account_role_arn
 
   databricks_account_username = var.databricks_account_username
   databricks_account_password = var.databricks_account_password
@@ -17,7 +17,7 @@ module "databricks_provisioning" {
   prefix     = var.prefix
   aws_region = var.aws_baseline_account["region"]
 
-  depends_on = [aws_iam_role_policy.this]
+  depends_on = [module.iam_roles]
 
   providers = {
     databricks.mws               = databricks.mws
