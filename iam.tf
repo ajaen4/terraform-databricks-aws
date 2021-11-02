@@ -9,7 +9,7 @@ resource "aws_iam_role" "cross_account_role" {
 }
 
 resource "time_sleep" "wait" {
-  depends_on = [aws_iam_role.cross_account_role]
+  depends_on      = [aws_iam_role.cross_account_role]
   create_duration = "10s"
 }
 
@@ -26,10 +26,10 @@ resource "aws_iam_role_policy" "this" {
 data "aws_iam_policy_document" "meta_assume_policy_doc" {
 
   statement {
-    sid       = "EC2AssumeRole"
-    effect    = "Allow"
+    sid    = "EC2AssumeRole"
+    effect = "Allow"
     principals {
-      type = "Service"
+      type        = "Service"
       identifiers = ["ec2.amazonaws.com"]
     }
 
@@ -42,8 +42,8 @@ data "aws_iam_policy_document" "meta_assume_policy_doc" {
 data "aws_iam_policy_document" "meta_assume_data_roles_policy" {
 
   statement {
-    sid       = "AssumeDataRoles"
-    effect    = "Allow"
+    sid    = "AssumeDataRoles"
+    effect = "Allow"
     resources = [
       aws_iam_role.s3_datalake_read_role.arn,
       aws_iam_role.s3_datalake_write_role.arn
@@ -64,11 +64,11 @@ resource "aws_iam_policy" "meta_role_policy" {
 }
 
 resource "aws_iam_role" "meta_role" {
-  name                = "${var.prefix}-meta_role"
+  name = "${var.prefix}-meta_role"
 
   assume_role_policy = data.aws_iam_policy_document.meta_assume_policy_doc.json
 
-  tags                = var.tags
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "meta_role_attachment" {
@@ -81,13 +81,13 @@ resource "aws_iam_role_policy_attachment" "meta_role_attachment" {
 data "aws_iam_policy_document" "data_role_assume_policy_doc" {
 
   statement {
-    sid       = "allowMetaRole"
-    effect    = "Allow"
+    sid    = "allowMetaRole"
+    effect = "Allow"
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = [aws_iam_role.meta_role.arn]
-    } 
+    }
 
     actions = [
       "sts:AssumeRole"
@@ -95,10 +95,10 @@ data "aws_iam_policy_document" "data_role_assume_policy_doc" {
   }
 
   statement {
-    sid       = "EC2AssumeRole"
-    effect    = "Allow"
+    sid    = "EC2AssumeRole"
+    effect = "Allow"
     principals {
-      type = "Service"
+      type        = "Service"
       identifiers = ["ec2.amazonaws.com"]
     }
 
@@ -142,11 +142,11 @@ resource "aws_iam_policy" "data_read_role_policy" {
 }
 
 resource "aws_iam_role" "s3_datalake_read_role" {
-  name                     = "${var.prefix}-s3_datalake_read_role"
+  name = "${var.prefix}-s3_datalake_read_role"
 
-  assume_role_policy       = data.aws_iam_policy_document.data_role_assume_policy_doc.json
-  
-  tags               = var.tags
+  assume_role_policy = data.aws_iam_policy_document.data_role_assume_policy_doc.json
+
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "data_read_role_attachment" {
@@ -193,11 +193,11 @@ resource "aws_iam_policy" "data_write_role_policy" {
 }
 
 resource "aws_iam_role" "s3_datalake_write_role" {
-  name                     = "${var.prefix}-s3_datalake_write_role"
+  name = "${var.prefix}-s3_datalake_write_role"
 
-  assume_role_policy       = data.aws_iam_policy_document.data_role_assume_policy_doc.json
-  
-  tags               = var.tags
+  assume_role_policy = data.aws_iam_policy_document.data_role_assume_policy_doc.json
+
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "data_write_role_attachment" {

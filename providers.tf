@@ -13,8 +13,8 @@ provider "databricks" {
 // initialize provider in normal mode
 provider "databricks" {
   // in normal scenario you won't have to give providers aliases
-  alias = "created_workspace"
-  host = module.databricks_provisioning.databricks_host
+  alias    = "created_workspace"
+  host     = module.databricks_provisioning.databricks_host
   username = var.databricks_account_username
   password = var.databricks_account_password
 }
@@ -23,7 +23,7 @@ provider "databricks" {
 provider "databricks" {
   // in normal scenario you won't have to give providers aliases
   alias = "token_auth"
-  host = module.databricks_provisioning.databricks_host
+  host  = module.databricks_provisioning.databricks_host
   token = module.databricks_provisioning.token_value
 }
 

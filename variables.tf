@@ -27,7 +27,7 @@ variable "customer_managed_vpc" {
 }
 
 variable "prefix" {
-  type = string
+  type    = string
   default = "cm-vpc"
 }
 

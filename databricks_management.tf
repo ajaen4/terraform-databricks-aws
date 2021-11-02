@@ -3,9 +3,9 @@ module "databricks_management" {
   source = "./modules/databricks-management"
 
   providers = {
-      databricks = databricks.token_auth
+    databricks = databricks.token_auth
   }
 
-  depends_on       = [module.databricks_provisioning]
+  depends_on = [module.databricks_provisioning]
 
 }
