@@ -29,7 +29,7 @@ resource "databricks_cluster" "high_concurrency_cluster" {
     zone_id                 = "eu-west-1"
     first_on_demand         = 1
     spot_bid_price_percent  = 100
-    instance_profile_arn = var.meta_role_arn
+    instance_profile_arn = var.meta_instance_profile_arn
   }
 
   custom_tags = {

@@ -26,13 +26,20 @@ resource "aws_s3_bucket" "root_storage_bucket" {
   })
 }
 
+resource "aws_s3_bucket_public_access_block" "data_bucket" {
+  bucket             = aws_s3_bucket.data_bucket.id
+  ignore_public_acls = true
+  depends_on         = [aws_s3_bucket.data_bucket]
+}
+
 resource "aws_s3_bucket" "data_bucket" {
   bucket = "${var.prefix}-data-bucket"
+  acl    = "private"
   versioning {
     enabled = false
   }
   force_destroy = true
   tags = merge(var.tags, {
-    Name = "${var.prefix}-rootbucket"
+    Name = "${var.prefix}-data-bucket"
   })
 }

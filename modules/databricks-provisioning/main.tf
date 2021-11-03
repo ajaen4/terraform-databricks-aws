@@ -36,5 +36,5 @@ resource "databricks_mws_workspaces" "this" {
 resource "databricks_token" "pat" {
   provider = databricks.created_workspace
   comment  = "Terraform Provisioning"
-  lifetime_seconds = 86400
+  #lifetime_seconds = 86400
 }
