@@ -16,7 +16,16 @@ resource "databricks_cluster" "high_concurrency_cluster" {
     "spark.databricks.repl.allowedLanguages": "python,sql",
     "spark.databricks.cluster.profile": "serverless",
     "spark.databricks.passthrough.enabled": true,
-    "spark.databricks.pyspark.enableProcessIsolation": true
+    "spark.databricks.pyspark.enableProcessIsolation": true,
+    "spark.databricks.hive.metastore.glueCatalog.enabled": true,
+    "spark.hadoop.aws.region": "eu-west-1",
+    #caches for glue to run faster
+    "spark.hadoop.aws.glue.cache.db.enable": true,
+    "spark.hadoop.aws.glue.cache.db.size": 1000,
+    "spark.hadoop.aws.glue.cache.db.ttl-mins": 30,
+    "spark.hadoop.aws.glue.cache.table.enable": true,
+    "spark.hadoop.aws.glue.cache.table.size": 1000,
+    "spark.hadoop.aws.glue.cache.table.ttl-mins": 30
   }
 
   autoscale {

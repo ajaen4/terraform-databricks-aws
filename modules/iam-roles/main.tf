@@ -109,6 +109,52 @@ resource "aws_iam_instance_profile" "meta_instance_profile" {
   role = aws_iam_role.meta_role.name
 }
 
+##### GLUE POLICIES ######
+
+data "aws_iam_policy_document" "glue_access_policy" {
+
+  statement {
+    sid    = "GrantFullAccessToGlue"
+    effect = "Allow"
+    resources = [
+      "*"
+    ]
+
+    actions = [
+      "glue:BatchCreatePartition",
+      "glue:BatchDeletePartition",
+      "glue:BatchGetPartition",
+      "glue:CreateDatabase",
+      "glue:CreateTable",
+      "glue:CreateUserDefinedFunction",
+      "glue:DeleteDatabase",
+      "glue:DeletePartition",
+      "glue:DeleteTable",
+      "glue:DeleteUserDefinedFunction",
+      "glue:GetDatabase",
+      "glue:GetDatabases",
+      "glue:GetPartition",
+      "glue:GetPartitions",
+      "glue:GetTable",
+      "glue:GetTables",
+      "glue:GetUserDefinedFunction",
+      "glue:GetUserDefinedFunctions",
+      "glue:UpdateDatabase",
+      "glue:UpdatePartition",
+      "glue:UpdateTable",
+      "glue:UpdateUserDefinedFunction"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "glue_access_policy" {
+  name        = "glueAccessPolicy"
+  path        = "/"
+  description = "Glue role policy"
+
+  policy = data.aws_iam_policy_document.glue_access_policy.json
+}
+
 ##### DATA READ ROLE ######
 
 data "aws_iam_policy_document" "data_role_assume_policy_doc" {
@@ -241,6 +287,11 @@ resource "aws_iam_role" "s3_datalake_write_role" {
 resource "aws_iam_role_policy_attachment" "data_write_role_attachment" {
   role       = aws_iam_role.s3_datalake_write_role.name
   policy_arn = aws_iam_policy.data_write_role_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "meta_role_glue_attachment" {
+  role       = aws_iam_role.s3_datalake_write_role.name
+  policy_arn = aws_iam_policy.glue_access_policy.arn
 }
 
 resource "aws_iam_instance_profile" "data_write_instance_profile" {
