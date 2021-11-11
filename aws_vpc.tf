@@ -17,8 +17,6 @@ module "customer_managed_vpc" {
   default_vpc_enable_dns_hostnames = var.customer_managed_vpc.default_vpc_enable_dns_hostnames
   default_vpc_enable_dns_support   = var.customer_managed_vpc.default_vpc_enable_dns_support
 
-  enable_flow_log = var.customer_managed_vpc.enable_flow_log
-
   enable_dns_hostnames = var.customer_managed_vpc.enable_dns_hostnames
   enable_dns_support   = var.customer_managed_vpc.enable_dns_support
 
@@ -35,6 +33,12 @@ module "customer_managed_vpc" {
     description = "Allow all internal TCP and UDP"
     self        = true
   }]
+
+  # VPC Flow Logs (Cloudwatch log group and IAM role will be created)
+  enable_flow_log                      = var.customer_managed_vpc.enable_flow_log
+  create_flow_log_cloudwatch_log_group = true
+  create_flow_log_cloudwatch_iam_role  = true
+  flow_log_max_aggregation_interval    = 60
 
   tags = var.tags
 }
