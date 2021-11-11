@@ -9,9 +9,12 @@ resource "aws_s3_bucket_policy" "root_bucket_policy" {
 }
 
 resource "aws_s3_bucket_public_access_block" "root_storage_bucket" {
-  bucket             = aws_s3_bucket.root_storage_bucket.id
-  ignore_public_acls = true
-  depends_on         = [aws_s3_bucket.root_storage_bucket]
+  bucket                  = aws_s3_bucket.root_storage_bucket.id
+  ignore_public_acls      = true
+  block_public_acls       = true
+  block_public_policy     = true
+  restrict_public_buckets = true
+  depends_on              = [aws_s3_bucket.root_storage_bucket]
 }
 
 resource "aws_s3_bucket" "root_storage_bucket" {
@@ -27,9 +30,12 @@ resource "aws_s3_bucket" "root_storage_bucket" {
 }
 
 resource "aws_s3_bucket_public_access_block" "data_bucket" {
-  bucket             = aws_s3_bucket.data_bucket.id
-  ignore_public_acls = true
-  depends_on         = [aws_s3_bucket.data_bucket]
+  bucket                  = aws_s3_bucket.data_bucket.id
+  ignore_public_acls      = true
+  block_public_acls       = true
+  block_public_policy     = true
+  restrict_public_buckets = true
+  depends_on              = [aws_s3_bucket.data_bucket]
 }
 
 resource "aws_s3_bucket" "data_bucket" {
