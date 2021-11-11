@@ -18,10 +18,6 @@ variable "workspace_name" {
   type = string
 }
 
-variable "workspace_url" {
-  type = string
-}
-
 variable "customer_managed_vpc" {
   type = any
 }
