@@ -17,8 +17,6 @@ module "databricks_provisioning" {
   prefix     = var.prefix
   aws_region = var.aws_baseline_account["region"]
 
-  depends_on = [module.iam_roles]
-
   providers = {
     databricks.mws               = databricks.mws
     databricks.created_workspace = databricks.created_workspace

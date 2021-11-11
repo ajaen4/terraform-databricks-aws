@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "cross_account_assume_meta_policy" {
 }
 
 resource "aws_iam_policy" "cross_acc_assume_meta_policy" {
-  name        = "CrossAccAssumeMeta"
+  name        = "${var.prefix}-CrossAccAssumeMeta"
   path        = "/"
   description = "Cross Account assume Meta role policy"
 
@@ -84,7 +84,7 @@ data "aws_iam_policy_document" "meta_assume_data_roles_policy" {
 }
 
 resource "aws_iam_policy" "meta_role_policy" {
-  name        = "metaRolePolicy"
+  name        = "${var.prefix}-metaRolePolicy"
   path        = "/"
   description = "Meta role policy"
 
@@ -105,7 +105,7 @@ resource "aws_iam_role_policy_attachment" "meta_role_attachment" {
 }
 
 resource "aws_iam_instance_profile" "meta_instance_profile" {
-  name = "meta_instance_profile"
+  name = "${var.prefix}-meta_instance_profile"
   role = aws_iam_role.meta_role.name
 }
 
@@ -148,7 +148,7 @@ data "aws_iam_policy_document" "glue_access_policy" {
 }
 
 resource "aws_iam_policy" "glue_access_policy" {
-  name        = "glueAccessPolicy"
+  name        = "${var.prefix}-glueAccessPolicy"
   path        = "/"
   description = "Glue role policy"
 
@@ -213,7 +213,7 @@ data "aws_iam_policy_document" "data_role_read_policy_doc" {
 }
 
 resource "aws_iam_policy" "data_read_role_policy" {
-  name        = "dataReadRolePolicy"
+  name        = "${var.prefix}-dataReadRolePolicy"
   path        = "/"
   description = "Data read role policy"
 
@@ -234,7 +234,7 @@ resource "aws_iam_role_policy_attachment" "data_read_role_attachment" {
 }
 
 resource "aws_iam_instance_profile" "data_read_instance_profile" {
-  name = "read_instance_profile"
+  name = "${var.prefix}-read_instance_profile"
   role = aws_iam_role.s3_datalake_read_role.name
 }
 
@@ -269,7 +269,7 @@ data "aws_iam_policy_document" "write_role_read_policy_doc" {
 }
 
 resource "aws_iam_policy" "data_write_role_policy" {
-  name        = "dataWriteRolePolicy"
+  name        = "${var.prefix}-dataWriteRolePolicy"
   path        = "/"
   description = "Data write role policy"
 
@@ -295,6 +295,6 @@ resource "aws_iam_role_policy_attachment" "meta_role_glue_attachment" {
 }
 
 resource "aws_iam_instance_profile" "data_write_instance_profile" {
-  name = "write_instance_profile"
+  name = "${var.prefix}-write_instance_profile"
   role = aws_iam_role.s3_datalake_write_role.name
 }

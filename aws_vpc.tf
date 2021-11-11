@@ -35,10 +35,10 @@ module "customer_managed_vpc" {
   }]
 
   # VPC Flow Logs (Cloudwatch log group and IAM role will be created)
-  enable_flow_log                      = var.customer_managed_vpc.enable_flow_log
-  create_flow_log_cloudwatch_log_group = true
-  create_flow_log_cloudwatch_iam_role  = true
-  flow_log_max_aggregation_interval    = 60
+  enable_flow_log                   = var.customer_managed_vpc.enable_flow_log
+  flow_log_destination_type         = "s3"
+  flow_log_destination_arn          = aws_s3_bucket.vpc_flow_log_bucket.arn
+  flow_log_max_aggregation_interval = 60
 
   tags = var.tags
 }

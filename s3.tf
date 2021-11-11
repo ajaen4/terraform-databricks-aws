@@ -49,3 +49,24 @@ resource "aws_s3_bucket" "data_bucket" {
     Name = "${var.prefix}-data-bucket"
   })
 }
+
+resource "aws_s3_bucket_public_access_block" "vpc_flow_log_bucket" {
+  bucket                  = aws_s3_bucket.vpc_flow_log_bucket.id
+  ignore_public_acls      = true
+  block_public_acls       = true
+  block_public_policy     = true
+  restrict_public_buckets = true
+  depends_on              = [aws_s3_bucket.vpc_flow_log_bucket]
+}
+
+resource "aws_s3_bucket" "vpc_flow_log_bucket" {
+  bucket = "${var.prefix}-vpc-flow-log-bucket"
+  acl    = "private"
+  versioning {
+    enabled = false
+  }
+  force_destroy = true
+  tags = merge(var.tags, {
+    Name = "${var.prefix}-data-bucket"
+  })
+}
