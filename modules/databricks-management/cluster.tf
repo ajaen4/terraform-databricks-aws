@@ -4,13 +4,15 @@ data "databricks_spark_version" "latest_lts" {
 
 data "databricks_node_type" "smallest" {
   local_disk = true
+  min_memory_gb = 31
+  min_cores = 4
 }
 
 resource "databricks_cluster" "high_concurrency_cluster" {
   cluster_name            = "High-Concurrency-Terraform"
   spark_version           = data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
-  autotermination_minutes = 20
+  autotermination_minutes = 30
 
   spark_conf = {
     "spark.databricks.repl.allowedLanguages": "python,sql",
@@ -34,10 +36,11 @@ resource "databricks_cluster" "high_concurrency_cluster" {
   }
 
   aws_attributes {
-    availability            = "SPOT"
-    zone_id                 = "eu-west-1"
+    availability            = "SPOT_WITH_FALLBACK"
     first_on_demand         = 1
-    spot_bid_price_percent  = 100
+    spot_bid_price_percent  = 30
+    ebs_volume_count = 1
+    ebs_volume_size = 100
     instance_profile_arn = var.meta_instance_profile_arn
   }
 
