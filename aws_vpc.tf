@@ -34,11 +34,11 @@ module "customer_managed_vpc" {
     self        = true
   }]
 
-  # VPC Flow Logs (Cloudwatch log group and IAM role will be created)
   enable_flow_log                   = var.customer_managed_vpc.enable_flow_log
   flow_log_destination_type         = "s3"
   flow_log_destination_arn          = aws_s3_bucket.vpc_flow_log_bucket.arn
   flow_log_max_aggregation_interval = 60
+  flow_log_log_format               = "$${subnet-id} $${instance-id} $${interface-id} $${protocol} $${dstaddr} $${pkt-dstaddr} $${srcaddr} $${srcport} $${pkt-srcaddr} $${tcp-flags}"
 
   tags = var.tags
 }

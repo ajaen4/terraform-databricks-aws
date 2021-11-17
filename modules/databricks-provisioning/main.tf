@@ -22,10 +22,10 @@ resource "databricks_mws_storage_configurations" "this" {
 }
 
 resource "databricks_mws_workspaces" "this" {
-  provider        = databricks.mws
-  account_id      = var.databricks_account_id
-  aws_region      = var.aws_region
-  workspace_name  = var.workspace_name
+  provider       = databricks.mws
+  account_id     = var.databricks_account_id
+  aws_region     = var.aws_region
+  workspace_name = var.workspace_name
 
   credentials_id           = databricks_mws_credentials.this.credentials_id
   storage_configuration_id = databricks_mws_storage_configurations.this.storage_configuration_id

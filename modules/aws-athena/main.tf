@@ -5,14 +5,14 @@
 
 locals {
   glue_resource_name = format(
-  "${local.resource_prefix}-%s-glue01-%s",
-  var.name,
-  var.tags.environment,
+    "${local.resource_prefix}-%s-glue01-%s",
+    var.name,
+    var.tags.environment,
   )
   athena_workgroup_name = format(
-  "${local.resource_prefix}-%s-athena01-%s",
-  var.name,
-  var.tags.environment,
+    "${local.resource_prefix}-%s-athena01-%s",
+    var.name,
+    var.tags.environment,
   )
 }
 
@@ -34,18 +34,18 @@ resource "aws_athena_workgroup" "this" {
   }
 
   tags = merge(
-  var.tags,
-  {
-    "resource_name" = local.athena_workgroup_name,
-    "resource_type" = "athena",
-  }
+    var.tags,
+    {
+      "resource_name" = local.athena_workgroup_name,
+      "resource_type" = "athena",
+    }
   )
 }
 
 resource "aws_athena_named_query" "this" {
   for_each = {
-  for key, value in var.queries :
-  key => value
+    for key, value in var.queries :
+    key => value
   }
 
   name        = lookup(each.value, "name", null)
@@ -80,10 +80,10 @@ resource "aws_glue_crawler" "this" {
   }
 
   tags = merge(
-  var.tags,
-  {
-    "resource_name" = local.glue_resource_name,
-    "resource_type" = "glue",
-  }
+    var.tags,
+    {
+      "resource_name" = local.glue_resource_name,
+      "resource_type" = "glue",
+    }
   )
 }
