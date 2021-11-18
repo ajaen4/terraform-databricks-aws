@@ -12,7 +12,10 @@ module "databricks_provisioning" {
   databricks_account_id       = var.databricks_account_id
   workspace_name              = var.workspace_name
 
-  bucket_name = aws_s3_bucket.root_storage_bucket.bucket
+  storage_key_arn        = module.aws_datalake_kms.kms_arn
+  storage_key_alias_name = module.aws_datalake_kms.kms_alias_name
+
+  bucket_name = module.aws_root_s3.s3_bucket_id
 
   prefix     = var.prefix
   aws_region = var.aws_baseline_account["region"]

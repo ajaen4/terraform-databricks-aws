@@ -3,18 +3,10 @@
 # Amazon S3 Bucket
 ######
 
-locals {
-  resource_name = format(
-    "${local.resource_prefix}-%s-%s",
-    var.bucket_name,
-    var.tags.environment,
-  )
-}
-
 resource "aws_s3_bucket" "this" {
   count = var.create_s3_bucket ? 1 : 0
 
-  bucket = local.resource_name
+  bucket = var.bucket_name
 
   force_destroy = var.force_destroy
   acl           = var.acl
@@ -98,7 +90,7 @@ resource "aws_s3_bucket" "this" {
   tags = merge(
     var.tags,
     {
-      "resource_name" = local.resource_name,
+      "resource_name" = var.bucket_name,
       "resource_type" = "s3",
     }
   )

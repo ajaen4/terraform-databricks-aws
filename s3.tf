@@ -1,72 +1,100 @@
-data "databricks_aws_bucket_policy" "this" {
-  bucket = aws_s3_bucket.root_storage_bucket.bucket
-}
-
-resource "aws_s3_bucket_policy" "root_bucket_policy" {
-  bucket     = aws_s3_bucket.root_storage_bucket.id
-  policy     = data.databricks_aws_bucket_policy.this.json
-  depends_on = [aws_s3_bucket_public_access_block.root_storage_bucket]
-}
-
-resource "aws_s3_bucket_public_access_block" "root_storage_bucket" {
-  bucket                  = aws_s3_bucket.root_storage_bucket.id
-  ignore_public_acls      = true
-  block_public_acls       = true
-  block_public_policy     = true
-  restrict_public_buckets = true
-  depends_on              = [aws_s3_bucket.root_storage_bucket]
-}
-
-resource "aws_s3_bucket" "root_storage_bucket" {
-  bucket = "${var.prefix}-rootbucket"
-  acl    = "private"
-  versioning {
-    enabled = false
+locals {
+  logging = {
+    target_bucket = module.aws_baseline_s3_logging.s3_bucket_id
+    target_prefix = "log/"
   }
-  force_destroy = true
-  tags = merge(var.tags, {
-    Name = "${var.prefix}-rootbucket"
-  })
 }
 
-resource "aws_s3_bucket_public_access_block" "data_bucket" {
-  bucket                  = aws_s3_bucket.data_bucket.id
-  ignore_public_acls      = true
-  block_public_acls       = true
-  block_public_policy     = true
-  restrict_public_buckets = true
-  depends_on              = [aws_s3_bucket.data_bucket]
+module "aws_vpc_flow_log_s3" {
+  source = "./modules/aws-s3-bucket"
+
+  bucket_name             = "${var.prefix}-vpc-flow-log-bucket"
+  block_public_acls       = var.aws_vpc_flow_log_s3.block_public_acls
+  block_public_policy     = var.aws_vpc_flow_log_s3.block_public_policy
+  create_s3_bucket        = var.aws_vpc_flow_log_s3.create_s3_bucket
+  force_destroy           = var.aws_vpc_flow_log_s3.force_destroy
+  kms_master_key_arn      = module.aws_datalake_kms.kms_arn
+  restrict_public_buckets = var.aws_vpc_flow_log_s3.restrict_public_buckets
+  sse_algorithm           = var.aws_vpc_flow_log_s3.sse_algorithm
+  sse_prevent             = var.aws_vpc_flow_log_s3.sse_prevent
+  versioning              = var.aws_vpc_flow_log_s3.versioning
+  tags                    = var.tags
+
+  depends_on = [module.aws_datalake_kms]
 }
 
-resource "aws_s3_bucket" "data_bucket" {
-  bucket = "${var.prefix}-data-bucket"
-  acl    = "private"
-  versioning {
-    enabled = false
-  }
-  force_destroy = true
-  tags = merge(var.tags, {
-    Name = "${var.prefix}-data-bucket"
-  })
+module "aws_root_s3" {
+  source = "./modules/aws-s3-bucket"
+
+  bucket_name             = "${var.prefix}-rootbucket"
+  block_public_acls       = var.aws_root_s3.block_public_acls
+  block_public_policy     = var.aws_root_s3.block_public_policy
+  create_s3_bucket        = var.aws_root_s3.create_s3_bucket
+  force_destroy           = var.aws_root_s3.force_destroy
+  kms_master_key_arn      = module.aws_datalake_kms.kms_arn
+  restrict_public_buckets = var.aws_root_s3.restrict_public_buckets
+  sse_algorithm           = var.aws_root_s3.sse_algorithm
+  sse_prevent             = var.aws_root_s3.sse_prevent
+  versioning              = var.aws_root_s3.versioning
+  tags                    = var.tags
+
+  depends_on = [module.aws_datalake_kms]
 }
 
-resource "aws_s3_bucket_public_access_block" "vpc_flow_log_bucket" {
-  bucket                  = aws_s3_bucket.vpc_flow_log_bucket.id
-  ignore_public_acls      = true
-  block_public_acls       = true
-  block_public_policy     = true
-  restrict_public_buckets = true
-  depends_on              = [aws_s3_bucket.vpc_flow_log_bucket]
+module "aws_datalake_s3_raw" {
+  source = "./modules/aws-s3-bucket"
+
+  bucket_name             = "${var.prefix}-raw"
+  block_public_acls       = var.aws_datalake_s3_raw.block_public_acls
+  block_public_policy     = var.aws_datalake_s3_raw.block_public_policy
+  create_s3_bucket        = var.aws_datalake_s3_raw.create_s3_bucket
+  force_destroy           = var.aws_datalake_s3_raw.force_destroy
+  kms_master_key_arn      = module.aws_datalake_kms.kms_arn
+  lifecycle_rule          = var.aws_datalake_s3_raw.lifecycle_rule
+  restrict_public_buckets = var.aws_datalake_s3_raw.restrict_public_buckets
+  sse_algorithm           = var.aws_datalake_s3_raw.sse_algorithm
+  sse_prevent             = var.aws_datalake_s3_raw.sse_prevent
+  versioning              = var.aws_datalake_s3_raw.versioning
+  tags                    = var.tags
+
+  depends_on = [module.aws_datalake_kms]
 }
 
-resource "aws_s3_bucket" "vpc_flow_log_bucket" {
-  bucket = "${var.prefix}-vpc-flow-log-bucket"
-  acl    = "private"
-  versioning {
-    enabled = false
-  }
-  force_destroy = true
-  tags = merge(var.tags, {
-    Name = "${var.prefix}-data-bucket"
-  })
+module "aws_datalake_s3_prepared" {
+  source = "./modules/aws-s3-bucket"
+
+  bucket_name             = "${var.prefix}-prepared"
+  block_public_acls       = var.aws_datalake_s3_prepared.block_public_acls
+  block_public_policy     = var.aws_datalake_s3_prepared.block_public_policy
+  create_s3_bucket        = var.aws_datalake_s3_prepared.create_s3_bucket
+  force_destroy           = var.aws_datalake_s3_prepared.force_destroy
+  kms_master_key_arn      = module.aws_datalake_kms.kms_arn
+  lifecycle_rule          = var.aws_datalake_s3_prepared.lifecycle_rule
+  restrict_public_buckets = var.aws_datalake_s3_prepared.restrict_public_buckets
+  sse_algorithm           = var.aws_datalake_s3_prepared.sse_algorithm
+  sse_prevent             = var.aws_datalake_s3_prepared.sse_prevent
+  versioning              = var.aws_datalake_s3_prepared.versioning
+  tags                    = var.tags
+
+  depends_on = [module.aws_datalake_kms]
 }
+
+module "aws_datalake_s3_trusted" {
+  source = "./modules/aws-s3-bucket"
+
+  bucket_name             = "${var.prefix}-trusted"
+  block_public_acls       = var.aws_datalake_s3_trusted.block_public_acls
+  block_public_policy     = var.aws_datalake_s3_trusted.block_public_policy
+  create_s3_bucket        = var.aws_datalake_s3_trusted.create_s3_bucket
+  force_destroy           = var.aws_datalake_s3_trusted.force_destroy
+  kms_master_key_arn      = module.aws_datalake_kms.kms_arn
+  lifecycle_rule          = var.aws_datalake_s3_trusted.lifecycle_rule
+  restrict_public_buckets = var.aws_datalake_s3_trusted.restrict_public_buckets
+  sse_algorithm           = var.aws_datalake_s3_trusted.sse_algorithm
+  sse_prevent             = var.aws_datalake_s3_trusted.sse_prevent
+  versioning              = var.aws_datalake_s3_trusted.versioning
+  tags                    = var.tags
+
+  depends_on = [module.aws_datalake_kms]
+}
+

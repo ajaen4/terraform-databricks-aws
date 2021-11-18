@@ -30,3 +30,39 @@ variable "prefix" {
 variable "tags" {
   type = map(string)
 }
+
+variable "aws_datalake_kms" {
+  type = map(string)
+}
+
+variable "aws_baseline_kms" {
+  type = map(string)
+}
+
+variable "aws_vpc_flow_log_s3" {
+  type = any
+}
+
+variable "aws_root_s3" {
+  type = any
+}
+
+variable "aws_datalake_s3_raw" {
+  type = any
+}
+
+variable "aws_datalake_s3_prepared" {
+  type = any
+}
+
+variable "aws_datalake_s3_trusted" {
+  type = any
+}
+
+variable "aws_datalake_s3_internal" {
+  type = any
+}
+
+variable "aws_baseline_s3_logging" {
+  type = any
+}

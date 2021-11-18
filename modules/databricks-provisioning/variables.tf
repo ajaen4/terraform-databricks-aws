@@ -42,4 +42,12 @@ variable "prefix" {
   type = string
 }
 
+variable "storage_key_arn" {
+  type = string
+}
+
+variable "storage_key_alias_name" {
+  type = string
+}
+
 
