@@ -14,6 +14,12 @@ variable "bucket_name" {
   type        = string
 }
 
+variable "is_root_bucket" {
+  description = "If the bucket is root bucket -> true"
+  type        = bool
+  default     = false
+}
+
 variable "force_destroy" {
   description = "Should be true to destroy the bucket without error"
   type        = bool

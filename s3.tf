@@ -27,6 +27,7 @@ module "aws_root_s3" {
   source = "./modules/aws-s3-bucket"
 
   bucket_name             = "${var.prefix}-rootbucket"
+  is_root_bucket          = true
   block_public_acls       = var.aws_root_s3.block_public_acls
   block_public_policy     = var.aws_root_s3.block_public_policy
   create_s3_bucket        = var.aws_root_s3.create_s3_bucket
