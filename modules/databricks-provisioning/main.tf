@@ -33,13 +33,6 @@ resource "databricks_mws_workspaces" "this" {
   storage_customer_managed_key_id = databricks_mws_customer_managed_keys.storage.customer_managed_key_id
 }
 
-// create PAT token to provision entities within workspace
-resource "databricks_token" "pat" {
-  provider = databricks.created_workspace
-  comment  = "Terraform Provisioning"
-  #lifetime_seconds = 86400
-}
-
 resource "databricks_mws_customer_managed_keys" "storage" {
   provider   = databricks.mws
   account_id = var.databricks_account_id
@@ -48,4 +41,39 @@ resource "databricks_mws_customer_managed_keys" "storage" {
     key_alias = var.storage_key_alias_name
   }
   use_cases = ["STORAGE"]
+}
+
+resource "databricks_service_principal" "this" {
+  provider     = databricks.created_workspace
+  display_name = "Service Principal"
+}
+
+data "databricks_group" "admins" {
+  provider     = databricks.created_workspace
+  display_name = "admins"
+}
+
+resource "databricks_group_member" "this" {
+  provider  = databricks.created_workspace
+  group_id  = data.databricks_group.admins.id
+  member_id = databricks_service_principal.this.id
+}
+
+resource "databricks_permissions" "token_usage" {
+  provider      = databricks.created_workspace
+  authorization = "tokens"
+  access_control {
+    service_principal_name = databricks_service_principal.this.application_id
+    permission_level       = "CAN_USE"
+  }
+}
+
+resource "databricks_obo_token" "this" {
+  provider         = databricks.created_workspace
+  application_id   = databricks_service_principal.this.application_id
+  comment          = "PAT on behalf of ${databricks_service_principal.this.display_name}"
+  lifetime_seconds = 3600
+
+  depends_on = [databricks_permissions.token_usage]
+
 }

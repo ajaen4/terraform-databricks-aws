@@ -3,5 +3,5 @@ output "databricks_host" {
 }
 
 output "token_value" {
-  value = databricks_token.pat.token_value
+  value = databricks_obo_token.this.token_value
 }
