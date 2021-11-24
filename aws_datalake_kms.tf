@@ -1,5 +1,6 @@
 data "aws_iam_policy_document" "databricks_storage_cmk" {
   version = "2012-10-17"
+
   statement {
     sid    = "Enable IAM User Permissions"
     effect = "Allow"
@@ -10,6 +11,7 @@ data "aws_iam_policy_document" "databricks_storage_cmk" {
     actions   = ["kms:*"]
     resources = ["*"]
   }
+
   statement {
     sid    = "Allow Databricks to use KMS key for DBFS"
     effect = "Allow"
@@ -26,6 +28,7 @@ data "aws_iam_policy_document" "databricks_storage_cmk" {
     ]
     resources = ["*"]
   }
+
   statement {
     sid    = "Allow Databricks to use KMS key for DBFS (Grants)"
     effect = "Allow"
