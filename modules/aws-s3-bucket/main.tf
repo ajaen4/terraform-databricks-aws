@@ -306,6 +306,35 @@ data "aws_iam_policy_document" "sse_root_bucket" {
 
 }
 
+data "aws_iam_policy_document" "sse_root_bucket_no_sse" {
+  count = !var.sse_prevent && var.create_s3_bucket && var.is_root_bucket ? 1 : 0
+
+  statement {
+    sid    = "allowControlPlaneAccess"
+    effect = "Allow"
+
+    actions = [
+      "s3:GetObject",
+      "s3:GetObjectVersion",
+      "s3:PutObject",
+      "s3:DeleteObject",
+      "s3:ListBucket",
+      "s3:GetBucketLocation",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.this[0].id}",
+      "arn:aws:s3:::${aws_s3_bucket.this[0].id}/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::414351767826:root"]
+    }
+  }
+
+}
+
 resource "aws_s3_bucket_policy" "sse" {
   count = var.sse_prevent && var.create_s3_bucket && !var.is_root_bucket ? 1 : 0
 
@@ -320,6 +349,15 @@ resource "aws_s3_bucket_policy" "sse_root_bucket" {
 
   bucket = aws_s3_bucket.this[0].id
   policy = data.aws_iam_policy_document.sse_root_bucket[0].json
+
+  depends_on = [aws_s3_bucket_public_access_block.this]
+}
+
+resource "aws_s3_bucket_policy" "sse_root_bucket_no_sse" {
+  count = !var.sse_prevent && var.create_s3_bucket && var.is_root_bucket ? 1 : 0
+
+  bucket = aws_s3_bucket.this[0].id
+  policy = data.aws_iam_policy_document.sse_root_bucket_no_sse[0].json
 
   depends_on = [aws_s3_bucket_public_access_block.this]
 }

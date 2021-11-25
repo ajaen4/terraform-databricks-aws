@@ -39,7 +39,7 @@ variable "aws_baseline_kms" {
   type = map(string)
 }
 
-variable "aws_vpc_flow_log_s3" {
+variable "aws_baseline_s3_logging" {
   type = any
 }
 
@@ -59,10 +59,6 @@ variable "aws_datalake_s3_trusted" {
   type = any
 }
 
-variable "aws_datalake_s3_internal" {
-  type = any
-}
-
-variable "aws_baseline_s3_logging" {
+variable "cluster_config" {
   type = any
 }

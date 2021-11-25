@@ -36,7 +36,7 @@ module "customer_managed_vpc" {
 
   enable_flow_log           = var.customer_managed_vpc.enable_flow_log
   flow_log_destination_type = "s3"
-  flow_log_destination_arn  = module.aws_vpc_flow_log_s3.s3_bucket_arn
+  flow_log_destination_arn  = module.aws_baseline_s3_logging.s3_bucket_arn
   #create_flow_log_cloudwatch_log_group = true
   #create_flow_log_cloudwatch_iam_role  = true
   flow_log_max_aggregation_interval = 60
@@ -58,25 +58,28 @@ module "vpc_endpoints" {
       route_table_ids = flatten([
         module.customer_managed_vpc.private_route_table_ids,
       module.customer_managed_vpc.public_route_table_ids])
-      tags = {
+      tags = merge({
         Name = "${var.prefix}-s3-vpc-endpoint"
-      }
+      },
+      var.tags)
     },
     sts = {
       service             = "sts"
       private_dns_enabled = true
       subnet_ids          = module.customer_managed_vpc.private_subnets
-      tags = {
+      tags = merge({
         Name = "${var.prefix}-sts-vpc-endpoint"
-      }
+      },
+      var.tags)
     },
     kinesis-streams = {
       service             = "kinesis-streams"
       private_dns_enabled = true
       subnet_ids          = module.customer_managed_vpc.private_subnets
-      tags = {
+      tags = merge({
         Name = "${var.prefix}-kinesis-vpc-endpoint"
-      }
+      },
+      var.tags)
     },
   }
 }
