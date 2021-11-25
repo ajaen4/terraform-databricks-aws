@@ -95,8 +95,8 @@ data "aws_iam_policy_document" "databricks_cross_account_policy" {
     ]
     condition {
       test     = "StringEquals"
-      variable = "ec2:ResourceTag/Vendor"
-      values   = ["Databricks"]
+      variable = "ec2:vpc"
+      values   = ["arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:vpc/${var.vpc_id}"]
     }
   }
 
