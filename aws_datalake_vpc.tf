@@ -60,7 +60,7 @@ module "vpc_endpoints" {
       module.customer_managed_vpc.public_route_table_ids])
       tags = merge({
         Name = "${var.prefix}-s3-vpc-endpoint"
-      },
+        },
       var.tags)
     },
     sts = {
@@ -69,7 +69,7 @@ module "vpc_endpoints" {
       subnet_ids          = module.customer_managed_vpc.private_subnets
       tags = merge({
         Name = "${var.prefix}-sts-vpc-endpoint"
-      },
+        },
       var.tags)
     },
     kinesis-streams = {
@@ -78,7 +78,7 @@ module "vpc_endpoints" {
       subnet_ids          = module.customer_managed_vpc.private_subnets
       tags = merge({
         Name = "${var.prefix}-kinesis-vpc-endpoint"
-      },
+        },
       var.tags)
     },
   }

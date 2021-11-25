@@ -44,47 +44,47 @@ resource "databricks_mws_customer_managed_keys" "storage" {
 }
 
 resource "databricks_service_principal" "this" {
-  provider     = databricks.created_workspace
-  display_name = "Service Principal"
+  provider             = databricks.created_workspace
+  display_name         = "Service Principal"
   allow_cluster_create = true
 }
 
 data "databricks_group" "admins" {
   provider     = databricks.created_workspace
   display_name = "admins"
-  depends_on = [databricks_mws_workspaces.this]
+  depends_on   = [databricks_mws_workspaces.this]
 }
 
 resource "databricks_group_member" "this" {
-  provider     = databricks.created_workspace
-  group_id = data.databricks_group.admins.id
+  provider  = databricks.created_workspace
+  group_id  = data.databricks_group.admins.id
   member_id = databricks_service_principal.this.id
 }
 
 resource "databricks_permissions" "token_usage" {
-  provider     = databricks.created_workspace
+  provider      = databricks.created_workspace
   authorization = "tokens"
   access_control {
     service_principal_name = databricks_service_principal.this.application_id
-    permission_level = "CAN_USE"
+    permission_level       = "CAN_USE"
   }
 }
 
 // Even though we don't use this token, it's necessary to create it before the service ppal's
 // token. If not, it will result in a tokens tokens doesn't exist error
 resource "databricks_token" "pat" {
-  provider = databricks.created_workspace
-  comment  = "Needed to start tokens"
+  provider         = databricks.created_workspace
+  comment          = "Needed to start tokens"
   lifetime_seconds = 10
 }
 
 resource "databricks_obo_token" "this" {
-  provider     = databricks.created_workspace
-  application_id = databricks_service_principal.this.application_id
-  comment = "PAT on behalf of ${databricks_service_principal.this.display_name}"
+  provider         = databricks.created_workspace
+  application_id   = databricks_service_principal.this.application_id
+  comment          = "PAT on behalf of ${databricks_service_principal.this.display_name}"
   lifetime_seconds = 7200
 
   depends_on = [
     databricks_group_member.this,
-    databricks_token.pat]
+  databricks_token.pat]
 }
