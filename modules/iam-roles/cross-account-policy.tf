@@ -1,3 +1,9 @@
+/*
+The vendor tag condition is commented because if not the instance profile 
+validation will fail. We have also done it this way because if not Terraform
+keeps trying to update the instance profile with "skip_validation = true" and 
+this component doesn't support update, having to taint it in every run.
+*/
 data "aws_iam_policy_document" "databricks_cross_account_policy" {
   statement {
     sid    = "NonResourceBasedPermissions"
@@ -39,11 +45,11 @@ data "aws_iam_policy_document" "databricks_cross_account_policy" {
       "ec2:ReplaceIamInstanceProfileAssociation"
     ]
     resources = ["arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:instance/*"]
-    condition {
+    /*condition {
       test     = "StringEquals"
       variable = "ec2:ResourceTag/Vendor"
       values   = ["Databricks"]
-    }
+    }*/
   }
 
   statement {
@@ -54,11 +60,11 @@ data "aws_iam_policy_document" "databricks_cross_account_policy" {
       "arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:volume/*",
       "arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:instance/*"
     ]
-    condition {
+    /*condition {
       test     = "StringEquals"
       variable = "ec2:ResourceTag/Vendor"
       values   = ["Databricks"]
-    }
+    }*/
   }
 
   statement {
@@ -68,11 +74,11 @@ data "aws_iam_policy_document" "databricks_cross_account_policy" {
     resources = [
       "arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:image/*"
     ]
-    condition {
+    /*condition {
       test     = "StringEquals"
       variable = "ec2:ResourceTag/Vendor"
       values   = ["Databricks"]
-    }
+    }*/
   }
 
   statement {
@@ -112,11 +118,11 @@ data "aws_iam_policy_document" "databricks_cross_account_policy" {
     resources = [
       "arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:instance/*"
     ]
-    condition {
+    /*condition {
       test     = "StringEquals"
       variable = "ec2:ResourceTag/Vendor"
       values   = ["Databricks"]
-    }
+    }*/
   }
 
   statement {
@@ -130,11 +136,11 @@ data "aws_iam_policy_document" "databricks_cross_account_policy" {
       "arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:instance/*",
       "arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:volume/*"
     ]
-    condition {
+    /*condition {
       test     = "StringEquals"
       variable = "ec2:ResourceTag/Vendor"
       values   = ["Databricks"]
-    }
+    }*/
   }
 
   statement {
@@ -142,11 +148,11 @@ data "aws_iam_policy_document" "databricks_cross_account_policy" {
     effect    = "Allow"
     actions   = ["ec2:CreateVolume"]
     resources = ["arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:volume/*"]
-    condition {
+    /*condition {
       test     = "StringEquals"
       variable = "ec2:ResourceTag/Vendor"
       values   = ["Databricks"]
-    }
+    }*/
   }
 
   statement {
@@ -154,11 +160,11 @@ data "aws_iam_policy_document" "databricks_cross_account_policy" {
     effect    = "Allow"
     actions   = ["ec2:DeleteVolume"]
     resources = ["arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:volume/*"]
-    condition {
+    /*condition {
       test     = "StringEquals"
       variable = "ec2:ResourceTag/Vendor"
       values   = ["Databricks"]
-    }
+    }*/
   }
 
   statement {
@@ -168,11 +174,11 @@ data "aws_iam_policy_document" "databricks_cross_account_policy" {
       "iam:PutRolePolicy"
     ]
     resources = ["arn:aws:iam::*:role/aws-service-role/spot.amazonaws.com/AWSServiceRoleForEC2Spot"]
-    condition {
+    /*condition {
       test     = "StringEquals"
       variable = "ec2:ResourceTag/Vendor"
       values   = ["Databricks"]
-    }
+    }*/
   }
 }
 

@@ -10,20 +10,25 @@ provider "databricks" {
   password = var.databricks_account_password
 }
 
-// initialize provider in normal mode
 provider "databricks" {
-  // in normal scenario you won't have to give providers aliases
   alias    = "created_workspace"
   host     = module.databricks_provisioning.databricks_host
   username = var.databricks_account_username
   password = var.databricks_account_password
 }
 
-// initialize provider in normal mode with token auth
+// provider with user's token auth, necessary because the service ppal
+// doesn't can't create clusters
 provider "databricks" {
-  // in normal scenario you won't have to give providers aliases
-  alias = "token_auth"
+  alias = "create_clusters"
   host  = module.databricks_provisioning.databricks_host
-  token = module.databricks_provisioning.token_value
+  token = module.databricks_provisioning.create_cluster_token
+}
+
+// provider with service ppal auth
+provider "databricks" {
+  alias = "service_ppal"
+  host  = module.databricks_provisioning.databricks_host
+  token = module.databricks_provisioning.service_ppal_token
 }
 

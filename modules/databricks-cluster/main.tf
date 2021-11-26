@@ -44,13 +44,13 @@ resource "databricks_cluster" "high_concurrency_cluster" {
     "spark.hadoop.aws.glue.cache.table.ttl-mins" : 30
   }
 
-  /*cluster_log_conf {
+  cluster_log_conf {
     s3 {
       destination = "s3://${var.log_bucket_id}/cluster-logs"
       region = var.aws_region
       endpoint = "https://s3-${var.aws_region}.amazonaws.com"
     }
-  }*/
+  }
 
   custom_tags = var.tags
 }

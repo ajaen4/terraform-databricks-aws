@@ -9,3 +9,7 @@ resource "databricks_group" "all_access" {
   allow_cluster_create       = false
   allow_instance_pool_create = false
 }
+
+data "databricks_group" "admins" {
+  display_name = "admins"
+}

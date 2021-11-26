@@ -74,15 +74,15 @@ resource "databricks_permissions" "token_usage" {
 // token. If not, it will result in a tokens tokens doesn't exist error
 resource "databricks_token" "pat" {
   provider         = databricks.created_workspace
-  comment          = "Needed to start tokens"
-  lifetime_seconds = 10
+  comment          = "Needed to start tokens and create cluster"
+  lifetime_seconds = 3600
 }
 
 resource "databricks_obo_token" "this" {
   provider         = databricks.created_workspace
   application_id   = databricks_service_principal.this.application_id
   comment          = "PAT on behalf of ${databricks_service_principal.this.display_name}"
-  lifetime_seconds = 7200
+  lifetime_seconds = 3600
 
   depends_on = [
     databricks_group_member.this,
