@@ -17,7 +17,3 @@ variable "cluster_config" {
 variable "tags" {
   type = map(string)
 }
-
-variable "log_bucket_id" {
-  type = string
-}
