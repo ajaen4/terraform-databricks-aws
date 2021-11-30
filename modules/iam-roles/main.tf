@@ -41,6 +41,44 @@ resource "aws_iam_role_policy_attachment" "cross_account_meta_role_attachment" {
   policy_arn = aws_iam_policy.cross_acc_assume_meta_policy.arn
 }
 
+##### DATABRICKS LOGS ACCESS POLICY #####
+
+data "aws_iam_policy_document" "access_log_bucket" {
+
+  statement {
+    sid       = "listBucket"
+    effect    = "Allow"
+    resources = [var.s3_databricks_log_bucket_arn]
+
+    actions = [
+      "s3:ListBucket"
+    ]
+  }
+
+  statement {
+    sid    = "readWriteObjects"
+    effect = "Allow"
+    resources = [
+      "${var.s3_databricks_log_bucket_arn}/*"
+    ]
+
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject",
+      "s3:PutObjectAcl"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "access_log_bucket_policy" {
+  name        = "${var.prefix}-logBucketPolicy"
+  path        = "/"
+  description = "Access log bucket policy"
+
+  policy = data.aws_iam_policy_document.access_log_bucket.json
+}
+
 ##### META ROLE ######
 
 data "aws_iam_policy_document" "meta_assume_policy_doc" {
@@ -89,6 +127,11 @@ resource "aws_iam_role" "meta_role" {
   assume_role_policy = data.aws_iam_policy_document.meta_assume_policy_doc.json
 
   tags = var.tags
+}
+
+resource "aws_iam_role_policy_attachment" "databricks_log_role_attachment" {
+  role       = aws_iam_role.meta_role.name
+  policy_arn = aws_iam_policy.access_log_bucket_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "meta_role_attachment" {
@@ -274,6 +317,11 @@ resource "aws_iam_role" "s3_datalake_write_role" {
   assume_role_policy = data.aws_iam_policy_document.data_role_assume_policy_doc.json
 
   tags = var.tags
+}
+
+resource "aws_iam_role_policy_attachment" "databricks_log_data_role_attachment" {
+  role       = aws_iam_role.s3_datalake_write_role.name
+  policy_arn = aws_iam_policy.access_log_bucket_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "data_write_role_attachment" {

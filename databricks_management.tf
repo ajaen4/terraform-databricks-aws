@@ -1,16 +1,21 @@
 module "databricks_management" {
   source = "./modules/databricks-management"
 
-  cluster_config = var.cluster_config
-  aws_region     = var.aws_baseline_account["region"]
+  databricks_account_id = var.databricks_account_id
+  cluster_config        = var.cluster_config
+  aws_region            = var.aws_baseline_account["region"]
 
   meta_instance_profile_arn = module.iam_roles.meta_instance_profile_arn
-  kms_key_arn_s3_enc        = module.aws_datalake_kms.kms_arn
+  datalake_key_arn        = module.aws_datalake_kms.kms_arn
+  log_s3_bucket_id          = module.aws_databricks_logging.s3_bucket_id
 
-  tags = var.tags
+  prefix = var.prefix
+  tags   = var.tags
 
   providers = {
-    databricks = databricks.service_ppal
+    databricks.account      = databricks.mws
+    databricks.pat_token = databricks.pat_token
+    databricks.service_ppal = databricks.service_ppal
   }
 
   depends_on = [module.databricks_provisioning]

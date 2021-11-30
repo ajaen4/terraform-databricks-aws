@@ -42,11 +42,19 @@ variable "prefix" {
   type = string
 }
 
-variable "storage_key_arn" {
+variable "datalake_key_arn" {
   type = string
 }
 
-variable "storage_key_alias_name" {
+variable "datalake_key_alias_name" {
+  type = string
+}
+
+variable "logging_key_arn" {
+  type = string
+}
+
+variable "logging_key_alias_name" {
   type = string
 }
 

@@ -10,7 +10,14 @@ TMP_WORKER_SCRIPT=/tmp/start_spark_slave_temp.sh
 
 TMP_SCRIPT=/tmp/set_core-site_configs.sh
 
-config_xml="/tmp/core-site.xml"
+config_xml="/dbfs/tmp/core-site.xml"
+
+if [ ! -e $config_xml ]; then
+    echo "$config_xml does not exist."
+    exit 1
+else
+    echo "$config_xml exists"
+fi
 
 cat >"$TMP_SCRIPT" <<EOL
 #!/bin/bash

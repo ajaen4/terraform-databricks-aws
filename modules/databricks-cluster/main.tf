@@ -41,14 +41,20 @@ resource "databricks_cluster" "high_concurrency_cluster" {
     "spark.hadoop.aws.glue.cache.db.ttl-mins" : 30,
     "spark.hadoop.aws.glue.cache.table.enable" : true,
     "spark.hadoop.aws.glue.cache.table.size" : 1000,
-    "spark.hadoop.aws.glue.cache.table.ttl-mins" : 30
+    "spark.hadoop.aws.glue.cache.table.ttl-mins" : 30,
+    #encryption
+    "spark.hadoop.fs.s3a.server-side-encryption.key" : var.datalake_key_arn
+    "spark.hadoop.fs.s3a.server-side-encryption-algorithm" : "SSE-KMS"
   }
 
   cluster_log_conf {
     s3 {
       destination = "s3://${var.log_bucket_id}/cluster-logs"
-      region = var.aws_region
-      endpoint = "https://s3-${var.aws_region}.amazonaws.com"
+      region      = var.aws_region
+      endpoint    = "https://s3-${var.aws_region}.amazonaws.com"
+      enable_encryption = true
+      encryption_type = "sse-kms"
+      kms_key = var.logging_key_arn
     }
   }
 

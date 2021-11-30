@@ -17,3 +17,11 @@ variable "tags" {
 variable "log_bucket_id" {
   type = string
 }
+
+variable "datalake_key_arn" {
+  type = string
+}
+
+variable "logging_key_arn" {
+  type = string
+}

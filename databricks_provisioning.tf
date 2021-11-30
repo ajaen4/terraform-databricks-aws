@@ -12,8 +12,10 @@ module "databricks_provisioning" {
   databricks_account_id       = var.databricks_account_id
   workspace_name              = var.workspace_name
 
-  storage_key_arn        = module.aws_datalake_kms.kms_arn
-  storage_key_alias_name = module.aws_datalake_kms.kms_alias_name
+  datalake_key_arn        = module.aws_datalake_kms.kms_arn
+  datalake_key_alias_name = module.aws_datalake_kms.kms_alias_name
+  logging_key_arn         = module.aws_baseline_kms.kms_arn
+  logging_key_alias_name  = module.aws_baseline_kms.kms_alias_name
 
   bucket_name = module.aws_root_s3.s3_bucket_id
 

@@ -43,6 +43,10 @@ variable "aws_baseline_s3_logging" {
   type = any
 }
 
+variable "aws_databricks_logs_s3" {
+  type = any
+}
+
 variable "aws_root_s3" {
   type = any
 }

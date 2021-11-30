@@ -29,3 +29,7 @@ variable "vpc_id" {
 variable "s3_root_bucket_arn" {
   type = string
 }
+
+variable "s3_databricks_log_bucket_arn" {
+  type = string
+}

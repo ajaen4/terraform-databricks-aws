@@ -3,18 +3,12 @@ data "aws_iam_policy_document" "aws_baseline_kms_document" {
   statement {
     sid    = "Enable IAM User Permissions"
     effect = "Allow"
-
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+      identifiers = ["*"]
     }
-
-    actions = [
-      "kms:*",
-    ]
-    resources = [
-      "*"
-    ]
+    actions   = ["kms:*"]
+    resources = ["*"]
   }
 
   statement {
@@ -84,6 +78,63 @@ data "aws_iam_policy_document" "aws_baseline_kms_document" {
     resources = [
       "*"
     ]
+  }
+
+  statement {
+    sid    = "Allow Databricks to use KMS key for DBFS"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::414351767826:root"]
+    }
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "Allow Databricks to use KMS key for DBFS (Grants)"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::414351767826:root"]
+    }
+    actions = [
+      "kms:CreateGrant",
+      "kms:ListGrants",
+      "kms:RevokeGrant"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = ["true"]
+    }
+  }
+  statement {
+    sid    = "Allow Databricks to use KMS key for EBS"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = [module.iam_roles.cross_account_role_arn]
+    }
+    actions = [
+      "kms:Decrypt",
+      "kms:GenerateDataKey*",
+      "kms:CreateGrant",
+      "kms:DescribeKey"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "kms:ViaService"
+      values   = ["ec2.*.amazonaws.com"]
+    }
   }
 }
 

@@ -1,5 +1,6 @@
 ##### META INSTANCE PROFILE #####
 resource "databricks_instance_profile" "meta_role" {
+  provider                 = databricks.service_ppal
   instance_profile_arn     = var.meta_instance_profile_arn
   is_meta_instance_profile = true
   // If the tag condition is present in the cross-account role it's
@@ -9,6 +10,7 @@ resource "databricks_instance_profile" "meta_role" {
 }
 
 resource "databricks_group_instance_profile" "admins_group_meta_role" {
-    group_id = data.databricks_group.admins.id
-    instance_profile_id = databricks_instance_profile.meta_role.id
+  provider            = databricks.service_ppal
+  group_id            = data.databricks_group.admins.id
+  instance_profile_id = databricks_instance_profile.meta_role.id
 }

@@ -2,7 +2,7 @@ output "databricks_host" {
   value = databricks_mws_workspaces.this.workspace_url
 }
 
-output "create_cluster_token" {
+output "pat_token" {
   value     = databricks_token.pat.token_value
   sensitive = true
 }
