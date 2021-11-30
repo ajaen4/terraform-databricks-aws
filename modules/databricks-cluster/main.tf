@@ -49,12 +49,12 @@ resource "databricks_cluster" "high_concurrency_cluster" {
 
   cluster_log_conf {
     s3 {
-      destination = "s3://${var.log_bucket_id}/cluster-logs"
-      region      = var.aws_region
-      endpoint    = "https://s3-${var.aws_region}.amazonaws.com"
+      destination       = "s3://${var.log_bucket_id}/cluster-logs"
+      region            = var.aws_region
+      endpoint          = "https://s3-${var.aws_region}.amazonaws.com"
       enable_encryption = true
-      encryption_type = "sse-kms"
-      kms_key = var.logging_key_arn
+      encryption_type   = "sse-kms"
+      kms_key           = var.logging_key_arn
     }
   }
 

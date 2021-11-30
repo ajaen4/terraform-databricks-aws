@@ -6,8 +6,8 @@ module "databricks_cluster" {
   log_bucket_id  = module.aws_databricks_logging.s3_bucket_id
 
   meta_instance_profile_arn = module.iam_roles.meta_instance_profile_arn
-  datalake_key_arn        = module.aws_datalake_kms.kms_arn
-  logging_key_arn         = module.aws_baseline_kms.kms_arn
+  datalake_key_arn          = module.aws_datalake_kms.kms_arn
+  logging_key_arn           = module.aws_baseline_kms.kms_arn
 
   tags = var.tags
 
