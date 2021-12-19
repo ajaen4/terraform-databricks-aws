@@ -187,3 +187,26 @@ resource "aws_iam_role_policy" "this" {
   role   = aws_iam_role.cross_account_role.id
   policy = data.aws_iam_policy_document.databricks_cross_account_policy.json
 }
+
+data "aws_iam_policy_document" "cross_account_assume_meta_policy" {
+
+  statement {
+    sid    = "PassMetaRole"
+    effect = "Allow"
+    resources = [
+      aws_iam_role.meta_role.arn
+    ]
+
+    actions = [
+      "iam:PassRole"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "cross_acc_assume_meta_policy" {
+  name        = "${var.prefix}-CrossAccAssumeMeta"
+  path        = "/"
+  description = "Cross Account assume Meta role policy"
+
+  policy = data.aws_iam_policy_document.cross_account_assume_meta_policy.json
+}
