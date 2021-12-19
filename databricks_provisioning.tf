@@ -5,7 +5,7 @@ module "databricks_provisioning" {
   subnet_ids         = module.customer_managed_vpc.private_subnets
   vpc_id             = module.customer_managed_vpc.vpc_id
 
-  cross_account_role_arn = module.iam_roles.cross_account_role_arn
+  cross_account_role_arn = module.iam_databricks_roles.cross_account_role_arn
 
   databricks_account_username = var.databricks_account_username
   databricks_account_password = var.databricks_account_password
@@ -19,7 +19,7 @@ module "databricks_provisioning" {
 
   bucket_name = module.aws_root_s3.s3_bucket_id
 
-  token_lifetime_seconds = 200
+  token_lifetime_seconds = 1200
 
   prefix     = var.prefix
   aws_region = var.aws_baseline_account["region"]

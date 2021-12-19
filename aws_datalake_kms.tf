@@ -53,7 +53,7 @@ data "aws_iam_policy_document" "databricks_storage_cmk" {
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = [module.iam_roles.cross_account_role_arn]
+      identifiers = [module.iam_databricks_roles.cross_account_role_arn]
     }
     actions = [
       "kms:Decrypt",

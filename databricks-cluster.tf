@@ -5,7 +5,7 @@ module "databricks_cluster" {
   aws_region     = var.aws_baseline_account["region"]
   log_bucket_id  = module.aws_databricks_logging.s3_bucket_id
 
-  meta_instance_profile_arn = module.iam_roles.meta_instance_profile_arn
+  meta_instance_profile_arn = module.iam_databricks_roles.meta_instance_profile_arn
   datalake_key_arn          = module.aws_datalake_kms.kms_arn
   logging_key_arn           = module.aws_baseline_kms.kms_arn
 

@@ -5,10 +5,10 @@ module "databricks_management" {
   cluster_config        = var.cluster_config
   aws_region            = var.aws_baseline_account["region"]
 
-  meta_instance_profile_arn = module.iam_roles.meta_instance_profile_arn
+  meta_instance_profile_arn = module.iam_databricks_roles.meta_instance_profile_arn
   datalake_key_arn          = module.aws_datalake_kms.kms_arn
   log_s3_bucket_id          = module.aws_databricks_logging.s3_bucket_id
-  log_delivery_role_arn     = module.iam_roles.log_delivery_role_arn
+  log_delivery_role_arn     = module.iam_databricks_roles.log_delivery_role_arn
 
   prefix = var.prefix
   tags   = var.tags

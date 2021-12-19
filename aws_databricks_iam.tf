@@ -1,5 +1,5 @@
-module "iam_roles" {
-  source = "./modules/iam-roles"
+module "iam_databricks_roles" {
+  source = "./modules/aws-databricks-iam-roles"
 
   prefix                = var.prefix
   tags                  = var.tags
@@ -12,7 +12,6 @@ module "iam_roles" {
   aws_region     = var.aws_baseline_account["region"]
   aws_account_id = var.aws_baseline_account["account_id"]
   vpc_id         = module.customer_managed_vpc.vpc_id
-
 
   providers = {
     databricks = databricks.mws
