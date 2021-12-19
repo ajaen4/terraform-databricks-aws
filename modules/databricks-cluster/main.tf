@@ -28,24 +28,11 @@ resource "databricks_cluster" "high_concurrency_cluster" {
     instance_profile_arn   = var.meta_instance_profile_arn
   }
 
-  spark_conf = {
-    "spark.databricks.repl.allowedLanguages" : "python,sql",
-    "spark.databricks.cluster.profile" : "serverless",
-    "spark.databricks.passthrough.enabled" : true,
-    "spark.databricks.pyspark.enableProcessIsolation" : true,
-    "spark.databricks.hive.metastore.glueCatalog.enabled" : true,
-    "spark.hadoop.aws.region" : var.aws_region,
-    #caches for glue to run faster
-    "spark.hadoop.aws.glue.cache.db.enable" : true,
-    "spark.hadoop.aws.glue.cache.db.size" : 1000,
-    "spark.hadoop.aws.glue.cache.db.ttl-mins" : 30,
-    "spark.hadoop.aws.glue.cache.table.enable" : true,
-    "spark.hadoop.aws.glue.cache.table.size" : 1000,
-    "spark.hadoop.aws.glue.cache.table.ttl-mins" : 30,
+  spark_conf = var.datalake_client_side_enc ? merge({
     #encryption
     "spark.hadoop.fs.s3a.server-side-encryption.key" : var.datalake_key_arn
     "spark.hadoop.fs.s3a.server-side-encryption-algorithm" : "SSE-KMS"
-  }
+  }, var.spark_conf) : var.spark_conf
 
   cluster_log_conf {
     s3 {

@@ -10,5 +10,5 @@ resource "databricks_global_init_script" "encryption_init_script" {
   provider = databricks.service_ppal
   source   = "${path.root}/config-files/init.sh"
   name     = "encryption_init_script"
-  enabled  = true
+  enabled  = var.dbfs_client_side_enc
 }

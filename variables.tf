@@ -66,3 +66,11 @@ variable "aws_datalake_s3_trusted" {
 variable "cluster_config" {
   type = any
 }
+
+variable "dbfs_client_side_enc" {
+  type = string
+}
+
+variable "datalake_client_side_enc" {
+  type = string
+}

@@ -11,7 +11,12 @@ output "vpc_id" {
   value       = module.customer_managed_vpc.vpc_id
 }
 
-output "def_sg_id" {
-  description = "The ID of the Def SG Id"
-  value       = module.customer_managed_vpc.default_security_group_id
+output "dbfs_client_side_enc" {
+  description = "Enable client side encryption for Databricks File System"
+  value = var.dbfs_client_side_enc
+}
+
+output "datalake_client_side_enc" {
+  description = "Enable client side encryption for Datalake"
+  value = var.datalake_client_side_enc
 }

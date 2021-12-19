@@ -9,6 +9,8 @@ module "databricks_cluster" {
   datalake_key_arn          = module.aws_datalake_kms.kms_arn
   logging_key_arn           = module.aws_baseline_kms.kms_arn
 
+  datalake_client_side_enc = var.datalake_client_side_enc
+
   tags = var.tags
 
   //Must have user PAT token, service ppal can't create clusters

@@ -9,7 +9,8 @@ module "databricks_management" {
   datalake_key_arn          = module.aws_datalake_kms.kms_arn
   log_s3_bucket_id          = module.aws_databricks_logging.s3_bucket_id
   log_delivery_role_arn     = module.iam_databricks_roles.log_delivery_role_arn
-
+  dbfs_client_side_enc      = var.dbfs_client_side_enc
+  
   prefix = var.prefix
   tags   = var.tags
 
