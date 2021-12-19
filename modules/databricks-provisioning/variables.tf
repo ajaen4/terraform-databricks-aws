@@ -58,4 +58,8 @@ variable "logging_key_alias_name" {
   type = string
 }
 
+variable "token_lifetime_seconds" {
+  type = number
+}
+
 

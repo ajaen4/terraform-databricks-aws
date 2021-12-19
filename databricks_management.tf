@@ -8,6 +8,7 @@ module "databricks_management" {
   meta_instance_profile_arn = module.iam_roles.meta_instance_profile_arn
   datalake_key_arn          = module.aws_datalake_kms.kms_arn
   log_s3_bucket_id          = module.aws_databricks_logging.s3_bucket_id
+  log_delivery_role_arn     = module.iam_roles.log_delivery_role_arn
 
   prefix = var.prefix
   tags   = var.tags

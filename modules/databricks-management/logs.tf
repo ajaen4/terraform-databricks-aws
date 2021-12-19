@@ -1,48 +1,24 @@
-data "databricks_aws_assume_role_policy" "logdelivery" {
-  provider         = databricks.service_ppal
-  external_id      = var.databricks_account_id
-  for_log_delivery = true
-}
-
-resource "aws_iam_role" "logdelivery" {
-  name               = "${var.prefix}-logdelivery"
-  description        = "(${var.prefix}) UsageDelivery role"
-  assume_role_policy = data.databricks_aws_assume_role_policy.logdelivery.json
-  tags               = var.tags
-}
-
-data "databricks_aws_bucket_policy" "logdelivery" {
-  provider         = databricks.service_ppal
-  full_access_role = aws_iam_role.logdelivery.arn
-  bucket           = var.log_s3_bucket_id
-}
-
-resource "aws_s3_bucket_policy" "logdelivery" {
-  bucket = var.log_s3_bucket_id
-  policy = data.databricks_aws_bucket_policy.logdelivery.json
-}
-
 resource "databricks_mws_credentials" "log_writer" {
   provider         = databricks.account
   account_id       = var.databricks_account_id
   credentials_name = "Usage Delivery"
-  role_arn         = aws_iam_role.logdelivery.arn
+  role_arn         = var.log_delivery_role_arn
 }
 
 resource "databricks_mws_storage_configurations" "log_bucket" {
   provider                   = databricks.account
   account_id                 = var.databricks_account_id
-  storage_configuration_name = "Usage Logs"
+  storage_configuration_name = "Billable and Audit Logs"
   bucket_name                = var.log_s3_bucket_id
 }
 
-resource "databricks_mws_log_delivery" "usage_logs" {
+resource "databricks_mws_log_delivery" "billable_logs" {
   provider                 = databricks.account
   account_id               = var.databricks_account_id
   credentials_id           = databricks_mws_credentials.log_writer.credentials_id
   storage_configuration_id = databricks_mws_storage_configurations.log_bucket.storage_configuration_id
   delivery_path_prefix     = "billable-usage"
-  config_name              = "Usage Logs"
+  config_name              = "Billable Logs"
   log_type                 = "BILLABLE_USAGE"
   output_format            = "CSV"
 }

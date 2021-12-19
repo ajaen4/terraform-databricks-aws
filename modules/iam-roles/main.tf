@@ -41,7 +41,7 @@ resource "aws_iam_role_policy_attachment" "cross_account_meta_role_attachment" {
   policy_arn = aws_iam_policy.cross_acc_assume_meta_policy.arn
 }
 
-##### DATABRICKS LOGS ACCESS POLICY #####
+##### ACCESS DATABRICKS LOGS BUCKET POLICY #####
 
 data "aws_iam_policy_document" "access_log_bucket" {
 
@@ -77,6 +77,25 @@ resource "aws_iam_policy" "access_log_bucket_policy" {
   description = "Access log bucket policy"
 
   policy = data.aws_iam_policy_document.access_log_bucket.json
+}
+
+##### DATABRICKS AUDIT AND BILLABLE LOGS ROLE #####
+
+data "databricks_aws_assume_role_policy" "log_delivery" {
+  external_id      = var.databricks_account_id
+  for_log_delivery = true
+}
+
+resource "aws_iam_role" "log_delivery" {
+  name               = "${var.prefix}-log-delivery"
+  description        = "(${var.prefix}) Usage and Audit delivery role"
+  assume_role_policy = data.databricks_aws_assume_role_policy.log_delivery.json
+  tags               = var.tags
+}
+
+resource "aws_iam_role_policy_attachment" "databricks_log_role_attachment" {
+  role       = aws_iam_role.log_delivery.name
+  policy_arn = aws_iam_policy.access_log_bucket_policy.arn
 }
 
 ##### META ROLE ######
@@ -129,7 +148,7 @@ resource "aws_iam_role" "meta_role" {
   tags = var.tags
 }
 
-resource "aws_iam_role_policy_attachment" "databricks_log_role_attachment" {
+resource "aws_iam_role_policy_attachment" "databricks_meta_log_role_attachment" {
   role       = aws_iam_role.meta_role.name
   policy_arn = aws_iam_policy.access_log_bucket_policy.arn
 }
@@ -317,11 +336,6 @@ resource "aws_iam_role" "s3_datalake_write_role" {
   assume_role_policy = data.aws_iam_policy_document.data_role_assume_policy_doc.json
 
   tags = var.tags
-}
-
-resource "aws_iam_role_policy_attachment" "databricks_log_data_role_attachment" {
-  role       = aws_iam_role.s3_datalake_write_role.name
-  policy_arn = aws_iam_policy.access_log_bucket_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "data_write_role_attachment" {

@@ -5,3 +5,7 @@ output "cross_account_role_arn" {
 output "meta_instance_profile_arn" {
   value = aws_iam_instance_profile.meta_instance_profile.arn
 }
+
+output "log_delivery_role_arn" {
+  value = aws_iam_role.log_delivery.arn
+}

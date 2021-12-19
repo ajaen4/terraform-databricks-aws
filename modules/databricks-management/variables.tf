@@ -18,6 +18,10 @@ variable "cluster_config" {
   type = any
 }
 
+variable "log_delivery_role_arn" {
+  type = string
+}
+
 variable "log_s3_bucket_id" {
   type = string
 }

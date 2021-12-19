@@ -19,6 +19,8 @@ module "databricks_provisioning" {
 
   bucket_name = module.aws_root_s3.s3_bucket_id
 
+  token_lifetime_seconds = 200
+
   prefix     = var.prefix
   aws_region = var.aws_baseline_account["region"]
 
