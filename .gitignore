@@ -36,3 +36,6 @@ terraform.rc
 
 # Ignore log output
 terraform.txt
+
+# Ignore auxiliar files
+/api-calls/*.json

@@ -24,6 +24,7 @@ Para el despliegue de la infraestructura es necesario rellenar el archivo de var
 
 A tener en cuenta:
 
+- Cuando los tokens caduquen hay que ejecutar el script "reset_tokens.sh" para resetearlos. Este script hace un taint de los tokens utilizados y reaprovisiona el modulo databricks_provisioning individualmente, ya que los tokens se utilizan para autenticarse para databricks_management.
 - Debido a que las APIs de Databricks necesitan diferentes tipos de autenticacion se han tenido que crear diferentes proveedores de Databricks con diferentes  credenciales. 
 - El service principal tiene limitaciones, no puede crear clusters ni ficheros en el dbfs, de ahi que se tenga que utilizar el proveedor con la autenticacion a traves de un pat token para la creación de estos recursos.
 - En cuanto a la encriptacion, se encriptan todos las capas de persistencia (S3 y EBS) y se puede añadir la opcion de hacer la encriptacion en cliente. Para esto es necesario la inclusion del global init script para colocar el core-site.xml para hadoop y en el cluster añadir la configuracion necesaria para spark.

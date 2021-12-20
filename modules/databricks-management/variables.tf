@@ -6,6 +6,14 @@ variable "databricks_account_id" {
   type = string
 }
 
+variable "databricks_host" {
+  type = string
+}
+
+variable "token" {
+  type = string
+}
+
 variable "meta_instance_profile_arn" {
   type = string
 }
@@ -27,6 +35,14 @@ variable "log_s3_bucket_id" {
 }
 
 variable "dbfs_client_side_enc" {
+  type = string
+}
+
+variable "read_role_arn" {
+  type = string
+}
+
+variable "write_role_arn" {
   type = string
 }
 
