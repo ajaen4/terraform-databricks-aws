@@ -1,0 +1,1 @@
+terraform destroy -var-file="vars/databricks.tfvars" -target=module.vpc_endpoints -target=module.customer_managed_vpc.aws_nat_gateway.this[0] -target=module.customer_managed_vpc.aws_eip.nat[0]
