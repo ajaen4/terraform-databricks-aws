@@ -7,9 +7,8 @@ module "databricks_provisioning" {
 
   cross_account_role_arn = module.iam_databricks_roles.cross_account_role_arn
 
-  databricks_account_username = var.databricks_account_username
-  databricks_account_password = var.databricks_account_password
-  databricks_account_id       = var.databricks_account_id
+  databricks_account_username = local.databricks_username
+  databricks_account_id       = local.databricks_account_id
   workspace_name              = var.workspace_name
 
   datalake_key_arn        = module.aws_datalake_kms.kms_arn

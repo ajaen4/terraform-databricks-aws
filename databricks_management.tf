@@ -2,7 +2,7 @@ module "databricks_management" {
   source = "./modules/databricks-management"
 
   databricks_host       = module.databricks_provisioning.databricks_host
-  databricks_account_id = var.databricks_account_id
+  databricks_account_id = local.databricks_account_id
   cluster_config        = var.cluster_config
   aws_region            = var.aws_baseline_account["region"]
   

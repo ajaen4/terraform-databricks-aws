@@ -2,24 +2,20 @@ variable "aws_baseline_account" {
   type = map(string)
 }
 
-variable "databricks_account_username" {
-  type = string
-}
-
-variable "databricks_account_password" {
-  type = string
-}
-
-variable "databricks_account_id" {
-  type = string
-}
-
 variable "workspace_name" {
   type = string
 }
 
 variable "customer_managed_vpc" {
   type = any
+}
+
+variable "databricks_pss_name" {
+  type = string
+}
+
+variable "databricks_account_param_name" {
+  type = string
 }
 
 variable "prefix" {

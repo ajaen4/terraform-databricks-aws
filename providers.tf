@@ -6,15 +6,15 @@ provider "aws" {
 provider "databricks" {
   alias    = "mws"
   host     = "https://accounts.cloud.databricks.com"
-  username = var.databricks_account_username
-  password = var.databricks_account_password
+  username = local.databricks_username
+  password = local.databricks_pss
 }
 
 provider "databricks" {
   alias    = "created_workspace"
   host     = module.databricks_provisioning.databricks_host
-  username = var.databricks_account_username
-  password = var.databricks_account_password
+  username = local.databricks_username
+  password = local.databricks_pss
 }
 
 // provider with user's token auth, necessary because the service ppal
