@@ -3,9 +3,9 @@
 
 ## Introduction
 
-Este proyecto se basa en el despliegue de una arquitectura en AWS para Databricks. La herramienta utilizada es Terraform.
+This project deploys an architecture in AWS for Databricks to use, resulting in a secure and functional environment to be able to work with Databricks. The tool used for this deployment is Terraform.
 
-[Link a la documentacion](https://docs.google.com/document/d/1ZaPrrdw3MCwOaSPQldkr9Z0C2WaQjK2Q1mHfA5BX6iY/edit#heading=h.juzm8wf61oip)
+[Documentation](https://docs.google.com/document/d/1ZaPrrdw3MCwOaSPQldkr9Z0C2WaQjK2Q1mHfA5BX6iY/edit#heading=h.juzm8wf61oip)
 
 ## Architecture
 
@@ -17,8 +17,6 @@ Este proyecto se basa en el despliegue de una arquitectura en AWS para Databrick
 - hashicorp/aws = 3.70.0
 
 ## Infrastructure deployment
-
-Para el despliegue de la infraestructura es necesario rellenar el archivo de variables y el backend para el remote state.
 
 To be able to deploy the infrastructure it's necessary to fill in the variable file ("vars/databricks.tfvars") and the backend config for the remote state ("terraform.tf")
 
