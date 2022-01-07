@@ -15,8 +15,6 @@ Este proyecto se basa en el despliegue de una arquitectura en AWS para Databrick
 
 - databrickslabs/databricks = 0.3.9
 - hashicorp/aws = 3.70.0
-- SSM:
-    - 
 
 ## Infrastructure deployment
 

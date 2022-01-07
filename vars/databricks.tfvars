@@ -3,8 +3,8 @@ aws_baseline_account = {
   account_id = 482861842012
 }
 
-databricks_account_param_name = "/databricks/admin_account_param" 
-databricks_pss_name = "/databricks/admin_pss"
+databricks_acc_username_param_path = "/databricks/admin_account_param" 
+databricks_pss_param_path = "/databricks/admin_pss"
 
 tags = {
   terraform   = "true"

@@ -10,11 +10,13 @@ variable "customer_managed_vpc" {
   type = any
 }
 
-variable "databricks_pss_name" {
+variable "databricks_pss_param_path" {
+  description = "ssm string parameter with the databricks account password"
   type = string
 }
 
-variable "databricks_account_param_name" {
+variable "databricks_acc_username_param_path" {
+  description = "ssm array parameter path with the databricks account and username, in that order"
   type = string
 }
 
