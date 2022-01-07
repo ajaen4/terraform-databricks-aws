@@ -1,42 +1,58 @@
 # Databricks - AWS
 
 
-## Introducción
+## Introduction
 
 Este proyecto se basa en el despliegue de una arquitectura en AWS para Databricks. La herramienta utilizada es Terraform.
 
 [Link a la documentacion](https://docs.google.com/document/d/1ZaPrrdw3MCwOaSPQldkr9Z0C2WaQjK2Q1mHfA5BX6iY/edit#heading=h.juzm8wf61oip)
 
-## Diagrama de Arquitectura
+## Architecture
 
 ![Alt text](images/arquitectura_simple.png?raw=true "Title")
 
-## Requisitos
+## Requirements
 
 - databrickslabs/databricks = 0.3.9
-- hashicorp/aws = 3.49.0
+- hashicorp/aws = 3.70.0
+- SSM:
+    - 
 
-## Despliegue infraestructura
+## Infrastructure deployment
 
 Para el despliegue de la infraestructura es necesario rellenar el archivo de variables y el backend para el remote state.
 
+To be able to deploy the infrastructure it's necessary to fill in the variable file ("vars/databricks.tfvars") and the backend config for the remote state ("terraform.tf")
+
+To deploy, the following commands must be run:
+
+```bash
+terraform init
+terraform <plan/apply/destroy> -var-file=vars/<file-name>.tfvars
+
+# Example
+terraform init
+terraform apply -var-file=vars/databricks.tfvars
+```
+
+
 ## Scripts 
 
-- reset_tokens: Cuando los tokens caduquen hay que ejecutar el script "reset_tokens.sh" para resetearlos. Este script hace un taint de los tokens utilizados y reaprovisiona el modulo databricks_provisioning individualmente, ya que los tokens se utilizan para autenticarse para databricks_management.
-- sleep_network_infrastructure: Cuando no se vaya a utilizar el workspace se puede ejecutar el script "sleep_network_infrastructure" para eliminar las redes que pueden incurrir en costes (NAT, etc...)
+- reset_tokens: When the tokens expire the script "reset_tokens.sh" must be run to reset them. This script deploys only the "databricks_provisioning" module in order to obtain new valid tokens. This is necessary because Terraform uses these tokens to authenticate when deploying/updating other resources in the "databricks_management" module, and even though it knows it must update the tokens, it first has to update the infrastructure state for this module. Running this script will avoid this update operation on the "databricks_management", being able to update the tokens.
 
-## A tener en cuenta
+- sleep_network_infrastructure: This is an optional script to avoid incurring in infrastructure costs when the deployment is not being used. It destroys the NAT used and the VPC Endpoints. To be able to use the deployment again just run "terraform apply -var-file=vars/<file-name>.tfvars"
 
-A tener en cuenta:
+## To take into account
 
-- Debido a que las APIs de Databricks necesitan diferentes tipos de autenticacion se han tenido que crear diferentes proveedores de Databricks con diferentes  credenciales. 
-- El service principal tiene limitaciones, no puede crear clusters ni ficheros en el dbfs, de ahi que se tenga que utilizar el proveedor con la autenticacion a traves de un pat token para la creación de estos recursos.
-- En cuanto a la encriptacion, se encriptan todos las capas de persistencia (S3 y EBS) y se puede añadir la opcion de hacer la encriptacion en cliente. Para esto es necesario la inclusion del global init script para colocar el core-site.xml para hadoop y en el cluster añadir la configuracion necesaria para spark.
+To take into account:
 
-## Pendiente
+- There are instances of the Databricks provider with different authentications, this is due to the fact that the provider needs different types of authentication for different resources (account based, Personal Access Token based, Service Ppal based)
+- The Service Principal has limitations, this is why we must use the Personal Access Token authentication in some cases. The limitations are the following:
+    - It can't create clusters (but it can manage them)
+    - It can't create files in the DBFS
+- Encryption: All persistence layers are encrypted (S3 and EBS) and the option to add client-side encryption is available. To do this it's necessary to set the variables "dbfs_client_side_enc" and "datalake_client_side_enc" to true depending on the use case you want to implement.
 
-- Añadir Private Links para realizar todo tipo de comunicacion a traves de canales privados
-- Meter las credenciales en un Secret Manager en vez de tenerlas en el archivo de variables
-- Incluir crawlers con Glue para el descubrimiento de metadatos
-- Impacto del uso de Kinesis para el logging
-- Añadir SSO
+## Posibles upgrades
+
+- Adding Private Links to be able to implement communications through private channels (please note that even when using public channels the communication is encrypted)
+- Add SSO (Single Sign-on)
