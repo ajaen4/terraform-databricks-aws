@@ -13,8 +13,30 @@ This project deploys an architecture in AWS for Databricks to use, resulting in 
 
 ## Requirements
 
+2 SSM parameters must be available with the necessary credentials for the Databricks account:
+- 1 array type parameter with the Databricks account and username in that order
+- 1 string type parameter with the Databricks account password
+
+Versions:
 - databrickslabs/databricks = 0.3.9
 - hashicorp/aws = 3.70.0
+
+## Infrastructure deployed
+
+This code will deploy the following infraestructure inside AWS:
+- 1 VPC
+- 3 VPC Endpoints
+- 2 KMS keys
+- 3 buckets for the datalake (raw, prepared and trusted) and 1 root bucket (for Databricks internal files, part of DBFS)
+- 2 buckets for logging (Databricks logging and infrastructure logging)
+- 1 EC2 cluster
+- 1 cross account role for Databricks
+- 1 meta instance profile for the cluster to assume
+- 2 data roles for the meta instance profile to assume (read or read and write on all datalake buckets)
+- 1 role with Glue permissions
+- 1 role to access the Databricks logging bucket for the cluster
+- 1 Databricks workspace
+- 2 Databricks user groups (read only or read and write on all datalake buckets)
 
 ## Infrastructure deployment
 
