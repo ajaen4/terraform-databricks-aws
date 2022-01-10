@@ -9,7 +9,7 @@ This project deploys an architecture in AWS for Databricks to use, resulting in 
 
 ## Architecture
 
-![Alt text](images/arquitectura_simple.png?raw=true "Title")
+![Alt text](images/architecture_overview.png?raw=true "Title")
 
 ## Requirements
 
