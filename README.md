@@ -18,7 +18,7 @@ This project deploys an architecture in AWS for Databricks to use, resulting in 
 
 ## Infrastructure deployment
 
-To be able to deploy the infrastructure it's necessary to fill in the variable file ("vars/databricks.tfvars") and the backend config for the remote state ("terraform.tf")
+To be able to deploy the infrastructure it's necessary to fill in the variables file ("vars/databricks.tfvars") and the backend config for the remote state ("terraform.tf")
 
 To deploy, the following commands must be run:
 
@@ -48,7 +48,7 @@ To take into account:
     - It can't create files in the DBFS
 - Encryption: All persistence layers are encrypted (S3 and EBS) and the option to add client-side encryption is available. To do this it's necessary to set the variables "dbfs_client_side_enc" and "datalake_client_side_enc" to true depending on the use case you want to implement.
 
-## Posibles upgrades
+## Posible upgrades
 
 - Adding Private Links to be able to implement communications through private channels (please note that even when using public channels the communication is encrypted)
 - Add SSO (Single Sign-on)
