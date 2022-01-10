@@ -3,8 +3,8 @@ aws_baseline_account = {
   account_id = 482861842012
 }
 
-databricks_acc_username_param_path = "/databricks/admin_account_param" 
-databricks_pss_param_path = "/databricks/admin_pss"
+databricks_acc_username_param_path = "/databricks/admin_account_param"
+databricks_pss_param_path          = "/databricks/admin_pss"
 
 tags = {
   terraform   = "true"
@@ -14,7 +14,7 @@ tags = {
   environment = "test"
 }
 
-dbfs_client_side_enc = true
+dbfs_client_side_enc     = true
 datalake_client_side_enc = true
 
 prefix         = "cm-vpc"

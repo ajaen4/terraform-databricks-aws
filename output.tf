@@ -13,10 +13,10 @@ output "vpc_id" {
 
 output "dbfs_client_side_enc" {
   description = "Enable client side encryption for Databricks File System"
-  value = var.dbfs_client_side_enc
+  value       = var.dbfs_client_side_enc
 }
 
 output "datalake_client_side_enc" {
   description = "Enable client side encryption for Datalake"
-  value = var.datalake_client_side_enc
+  value       = var.datalake_client_side_enc
 }

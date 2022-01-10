@@ -47,5 +47,5 @@ variable "spark_conf" {
     "spark.hadoop.aws.glue.cache.table.ttl-mins" : 30
   }
 
-  type = map
+  type = map(any)
 }
