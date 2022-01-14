@@ -5,21 +5,28 @@
 
 This project deploys an architecture in AWS for Databricks to use, resulting in a secure and functional environment to be able to work with Databricks. The tool used for this deployment is Terraform.
 
-[Documentation](https://docs.google.com/document/d/1ZaPrrdw3MCwOaSPQldkr9Z0C2WaQjK2Q1mHfA5BX6iY/edit#heading=h.juzm8wf61oip)
-
 ## Architecture
 
 ![Alt text](images/architecture-overview.png?raw=true "Title")
 
+## Documentation
+
+Articles:
+ - [First article: Subscription types, High Level Architecture, Networking, Identity and Access Management](https://bluetab.net/en/databricks-sobre-aws-una-perspectiva-de-arquitectura-parte-1/)
+ - Second article: Security, Scalability, Logging and Monitoring and Deployment
+ - Medium article: deep dive on deployment
+
 ## Requirements
 
-2 SSM parameters must be available with the necessary credentials for the Databricks account:
-- 1 array type parameter with the Databricks account and username in that order
-- 1 string type parameter with the Databricks account password
+- You must own an AWS account and have an Access Key to be able to authenticate.
 
-Versions:
-- databrickslabs/databricks = 0.3.9
-- hashicorp/aws = 3.70.0
+- 2 SSM parameters must be available with the necessary credentials for the Databricks account:
+    - 1 array type parameter with the Databricks account and username in that order
+    - 1 string type parameter with the Databricks account password
+
+- Versions:
+    - databrickslabs/databricks = 0.3.9
+    - hashicorp/aws = 3.70.0
 
 ## Infrastructure deployed
 
@@ -38,6 +45,12 @@ This code will deploy the following infraestructure inside AWS:
 - 1 Databricks workspace
 - 2 Databricks user groups (read only or read and write on all datalake buckets)
 
+## Installation
+
+Follow the instructions [here](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/aws-get-started#:~:text=popular%20package%20managers.-,%C2%BB,Install%20Terraform,-Manual%20installation) to install terraform
+
+Follow the instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) to install the AWS CLI
+
 ## Infrastructure deployment
 
 To be able to deploy the infrastructure it's necessary to fill in the variables file ("vars/databricks.tfvars") and the backend config for the remote state ("terraform.tf")
@@ -52,7 +65,6 @@ terraform <plan/apply/destroy> -var-file=vars/<file-name>.tfvars
 terraform init
 terraform apply -var-file=vars/databricks.tfvars
 ```
-
 
 ## Scripts 
 
@@ -74,3 +86,7 @@ To take into account:
 
 - Adding Private Links to be able to implement communications through private channels (please note that even when using public channels the communication is encrypted)
 - Add SSO (Single Sign-on)
+
+## License
+
+MIT License - Copyright (c) 2021 The databricks-aws Authors.
