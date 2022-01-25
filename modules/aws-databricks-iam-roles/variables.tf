@@ -14,11 +14,11 @@ variable "s3_data_bucket_arn" {
   type = string
 }
 
-variable "aws_region" {
+variable "aws_account_id" {
   type = string
 }
 
-variable "aws_account_id" {
+variable "aws_region" {
   type = string
 }
 

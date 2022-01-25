@@ -10,7 +10,7 @@ module "iam_databricks_roles" {
   s3_databricks_log_bucket_arn = module.aws_databricks_logging.s3_bucket_arn
 
   aws_region     = var.aws_baseline_account["region"]
-  aws_account_id = var.aws_baseline_account["account_id"]
+  aws_account_id = data.aws_caller_identity.current.account_id
   vpc_id         = module.customer_managed_vpc.vpc_id
 
   providers = {

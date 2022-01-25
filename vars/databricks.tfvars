@@ -1,6 +1,5 @@
 aws_baseline_account = {
   region     = "eu-west-1"
-  account_id = 482861842012
 }
 
 databricks_acc_username_param_path = "/databricks/admin_account_param"
