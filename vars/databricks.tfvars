@@ -1,6 +1,4 @@
-aws_baseline_account = {
-  region     = "eu-west-1"
-}
+aws_region = "eu-west-1"
 
 databricks_acc_username_param_path = "/databricks/admin_account_param"
 databricks_pss_param_path          = "/databricks/admin_pss"

@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.aws_baseline_account["region"]
+  region = var.aws_region
 }
 
 // initialize provider in "MWS" mode to provision new workspace

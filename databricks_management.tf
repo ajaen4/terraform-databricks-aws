@@ -4,7 +4,7 @@ module "databricks_management" {
   databricks_host       = module.databricks_provisioning.databricks_host
   databricks_account_id = local.databricks_account_id
   cluster_config        = var.cluster_config
-  aws_region            = var.aws_baseline_account["region"]
+  aws_region            = var.aws_region
 
   token = module.databricks_provisioning.pat_token
 

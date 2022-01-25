@@ -21,7 +21,7 @@ module "databricks_provisioning" {
   token_lifetime_seconds = 1200
 
   prefix     = var.prefix
-  aws_region = var.aws_baseline_account["region"]
+  aws_region = var.aws_region
 
   providers = {
     databricks.mws               = databricks.mws

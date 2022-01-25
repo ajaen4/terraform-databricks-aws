@@ -1,5 +1,5 @@
-variable "aws_baseline_account" {
-  type = map(string)
+variable "aws_region" {
+  type = string
 }
 
 variable "workspace_name" {

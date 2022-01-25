@@ -2,7 +2,7 @@ module "databricks_cluster" {
   source = "./modules/databricks-cluster"
 
   cluster_config = var.cluster_config
-  aws_region     = var.aws_baseline_account["region"]
+  aws_region     = var.aws_region
   log_bucket_id  = module.aws_databricks_logging.s3_bucket_id
 
   meta_instance_profile_arn = module.iam_databricks_roles.meta_instance_profile_arn

@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "aws_baseline_kms_document" {
 
     principals {
       type        = "Service"
-      identifiers = ["logs.${var.aws_baseline_account.region}.amazonaws.com"]
+      identifiers = ["logs.${var.aws_region}.amazonaws.com"]
     }
 
     actions = [
