@@ -20,11 +20,14 @@ Articles:
 
 - You must own an AWS account and have an Access Key to be able to authenticate.
 
+- You must have deployed a bucket and a DynamoDB to be able to store Terraform's remote state.
+
 - 2 SSM parameters must be available with the necessary credentials for the Databricks account:
     - 1 array type parameter with the Databricks account and username in that order
     - 1 string type parameter with the Databricks account password
 
 - Versions:
+    - Terraform = 1.1.2
     - databrickslabs/databricks = 0.3.9
     - hashicorp/aws = 3.70.0
 
