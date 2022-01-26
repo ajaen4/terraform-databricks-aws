@@ -35,6 +35,9 @@ Articles:
 
 This code will deploy the following infraestructure inside AWS:
 - 1 VPC
+- 3 Private Subnets in 3 different AZs
+- 1 Public Subnet
+- 1 NAT 
 - 3 VPC Endpoints
 - 2 KMS keys
 - 3 buckets for the datalake (raw, prepared and trusted) and 1 root bucket (for Databricks internal files, part of DBFS)
