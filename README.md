@@ -57,6 +57,22 @@ Follow the instructions [here](https://learn.hashicorp.com/tutorials/terraform/i
 
 Follow the instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) to install the AWS CLI
 
+## bucket and DynamoDB for terraform state deployment
+
+```bash
+export AWS_ACCESS_KEY_ID=XXXX
+export AWS_SECRET_ACCESS_KEY=XXXX
+export AWS_DEFAULT_REGION=eu-west-1
+
+cd bootstraper-terraform
+terraform init
+terraform <plan/apply/destroy> -var-file=vars/eu-west-1.bootstraper.tfvars
+
+# Example
+cd bootstraper-terraform
+terraform init
+terraform apply -var-file=vars/eu-west-1.bootstraper.tfvars
+```
 ## Infrastructure deployment
 
 To be able to deploy the infrastructure it's necessary to fill in the variables file ("vars/databricks.tfvars") and the backend config for the remote state ("terraform.tf")
@@ -64,12 +80,13 @@ To be able to deploy the infrastructure it's necessary to fill in the variables 
 To deploy, the following commands must be run:
 
 ```bash
-terraform init
-terraform <plan/apply/destroy> -var-file=vars/<file-name>.tfvars
+export AWS_ACCESS_KEY_ID=XXXX
+export AWS_SECRET_ACCESS_KEY=XXXX
+export AWS_DEFAULT_REGION=eu-west-1
+export BACKEND_S3="${AWS_DEFAULT_REGION}-1-bluetab-cm-vpc-tfstate"
 
-# Example
-terraform init
-terraform apply -var-file=vars/databricks.tfvars
+terraform init -backend-config="bucket=${BACKEND_S3}"
+terraform <plan/apply/destroy> -var-file=vars/<file-name>.tfvars
 ```
 
 ## Scripts 
