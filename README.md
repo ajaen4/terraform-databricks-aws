@@ -13,8 +13,7 @@ This project deploys an architecture in AWS for Databricks to use, resulting in 
 
 Articles:
  - [First article: Subscription types, High Level Architecture, Networking, Identity and Access Management](https://bluetab.net/en/databricks-sobre-aws-una-perspectiva-de-arquitectura-parte-1/)
- - Second article: Security, Scalability, Logging and Monitoring and Deployment
- - Medium article: deep dive on deployment
+ - [Second article: Security, Scalability, Billing and Deployment](https://www.bluetab.net/en/databricks-on-aws-an-architectural-perspective-part-2/)
 
 ## Requirements
 
