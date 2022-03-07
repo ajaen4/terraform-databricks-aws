@@ -18,7 +18,7 @@ provider "databricks" {
 }
 
 // provider with user's token auth, necessary because the service ppal
-// can't create clusters or create files in dbfs
+// can't create clusters
 provider "databricks" {
   alias = "pat_token"
   host  = module.databricks_provisioning.databricks_host
