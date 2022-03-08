@@ -56,6 +56,8 @@ Follow the instructions [here](https://learn.hashicorp.com/tutorials/terraform/i
 
 Follow the instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) to install the AWS CLI
 
+Follow the instructions [here](https://cloudaffaire.com/faq/how-to-install-jq/) to install jq
+
 ## bucket and DynamoDB for terraform state deployment
 
 ```bash
