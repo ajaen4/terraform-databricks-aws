@@ -130,7 +130,7 @@ To take into account:
 
 ## Troubleshooting
 
-- It is important to personalize the variables used well, there can be conflicts with the names because AWS needs the names of some resources to be globally unique.
+- It is important to personalize the variables used well, there can be conflicts with the names because AWS needs the names of some resources to be globally unique. If you get an error when deploying, check the error is not due to a name conflict of the type: "bucket already exists".
 - When destroying the infrastructure, the file resource we use to contain an init script for the cluster can fail to be deleted. Run the following command to remove it from state management and try to destroy the infrastructure again:
 
 ```bash
