@@ -65,12 +65,12 @@ export AWS_DEFAULT_REGION=eu-west-1
 
 cd bootstraper-terraform
 terraform init
-terraform <plan/apply/destroy> -var-file=vars/eu-west-1.bootstraper.tfvars
+terraform <plan/apply/destroy> -var-file=vars/bootstraper.tfvars
 
 # Example
 cd bootstraper-terraform
 terraform init
-terraform apply -var-file=vars/eu-west-1.bootstraper.tfvars
+terraform apply -var-file=vars/bootstraper.tfvars
 ```
 ## Infrastructure deployment
 
@@ -82,7 +82,7 @@ To deploy, the following commands must be run:
 export AWS_ACCESS_KEY_ID=XXXX
 export AWS_SECRET_ACCESS_KEY=XXXX
 export AWS_DEFAULT_REGION=eu-west-1
-export BACKEND_S3="${AWS_DEFAULT_REGION}-1-bluetab-cm-vpc-tfstate"
+export BACKEND_S3="${AWS_DEFAULT_REGION}-bluetab-cm-vpc-tfstate"
 
 terraform init -backend-config="bucket=${BACKEND_S3}"
 terraform <plan/apply/destroy> -var-file=vars/<file-name>.tfvars
