@@ -14,12 +14,11 @@ This project deploys an architecture in AWS for Databricks to use, resulting in 
 Articles:
  - [First article: Subscription types, High Level Architecture, Networking, Identity and Access Management](https://bluetab.net/en/databricks-sobre-aws-una-perspectiva-de-arquitectura-parte-1/)
  - [Second article: Security, Scalability, Billing and Deployment](https://www.bluetab.net/en/databricks-on-aws-an-architectural-perspective-part-2/)
+ - [Medium article: Deployment details](https://medium.com/@a.jaenrev/deploy-databricks-on-aws-with-terraform-71772b4a04dc)
 
 ## Requirements
 
 - You must own an AWS account and have an Access Key to be able to authenticate.
-
-- You must have deployed a bucket and a DynamoDB to be able to store Terraform's remote state.
 
 - 2 SSM parameters must be available with the necessary credentials for the Databricks account:
     - 1 array type parameter with the Databricks account and username in that order
