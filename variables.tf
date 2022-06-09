@@ -85,3 +85,7 @@ variable "datalake_client_side_enc" {
   description = "set to true to enable client side encryption on the datalake buckets (raw, prepared and trusted)"
   type        = string
 }
+
+variable "token_lifetime_seconds" {
+  type = number
+}

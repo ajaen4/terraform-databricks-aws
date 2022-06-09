@@ -11,6 +11,8 @@ tags = {
   environment = "test"
 }
 
+token_lifetime_seconds = 518400
+
 dbfs_client_side_enc     = true
 datalake_client_side_enc = true
 
