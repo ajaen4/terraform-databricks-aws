@@ -20,8 +20,6 @@ Articles:
 
 - You must own an AWS account and have an Access Key to be able to authenticate.
 
-- You must have deployed a bucket and a DynamoDB to be able to store Terraform's remote state.
-
 - 2 SSM parameters must be available with the necessary credentials for the Databricks account:
     - 1 array type parameter with the Databricks account and username in that order
     - 1 string type parameter with the Databricks account password
@@ -57,6 +55,8 @@ Follow the instructions [here](https://learn.hashicorp.com/tutorials/terraform/i
 
 Follow the instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) to install the AWS CLI
 
+Follow the instructions [here](https://cloudaffaire.com/faq/how-to-install-jq/) to install jq
+
 ## bucket and DynamoDB for terraform state deployment
 
 ```bash
@@ -66,13 +66,24 @@ export AWS_DEFAULT_REGION=eu-west-1
 
 cd bootstraper-terraform
 terraform init
-terraform <plan/apply/destroy> -var-file=vars/eu-west-1.bootstraper.tfvars
+terraform <plan/apply/destroy> -var-file=vars/bootstraper.tfvars
 
 # Example
 cd bootstraper-terraform
 terraform init
-terraform apply -var-file=vars/eu-west-1.bootstraper.tfvars
+terraform apply -var-file=vars/bootstraper.tfvars
 ```
+
+It is important that you choose wisely the variables declared in the "bootstraper-terrafom/vars/bootstraper.tfvars" file because the bucket name is formed using these.
+
+There will be an output printed on the terminal's screen, this could be an example:
+
+```bash
+state_bucket_name = "eu-west-1-bluetab-cm-vpc-tfstate"
+```
+
+Please copy it, we will be using it in the next chapter.
+
 ## Infrastructure deployment
 
 To be able to deploy the infrastructure it's necessary to fill in the variables file ("vars/databricks.tfvars") and the backend config for the remote state ("terraform.tf")
@@ -83,17 +94,23 @@ To deploy, the following commands must be run:
 export AWS_ACCESS_KEY_ID=XXXX
 export AWS_SECRET_ACCESS_KEY=XXXX
 export AWS_DEFAULT_REGION=eu-west-1
-export BACKEND_S3="${AWS_DEFAULT_REGION}-1-bluetab-cm-vpc-tfstate"
+export BACKEND_S3=<VALUE_COPIED_PREVIOUS_CHAPTER>
 
 terraform init -backend-config="bucket=${BACKEND_S3}"
 terraform <plan/apply/destroy> -var-file=vars/<file-name>.tfvars
 ```
 
+We will use the value copied in the previous chapter, the state bucket name, to give the variable BACKEND_S3 its value.
+
+It is important that you choose the prefix variable in the "vars/databricks.vars" wisely because it will be used to name all the infrastructure, including the buckets. These buckets must have a global unique name in AWS, so if you get an error deploying it is most likely that this is due to the fact that these names are already being used.
+
 ## Scripts 
 
 - reset_tokens: When the tokens expire the script "reset_tokens.sh" must be run to reset them. This script deploys only the "databricks_provisioning" module in order to obtain new valid tokens. This is necessary because Terraform uses these tokens to authenticate when deploying/updating other resources in the "databricks_management" module, and even though it knows it must update the tokens, it first has to update the infrastructure state for this module. Running this script will avoid this update operation on the "databricks_management", being able to update the tokens.
 
-- sleep_network_infrastructure: This is an optional script to avoid incurring in infrastructure costs when the deployment is not being used. It destroys the NAT used and the VPC Endpoints. To be able to use the deployment again just run "terraform apply -var-file=vars/<file-name>.tfvars"
+- sleep_network_infrastructure: This is an optional script to avoid incurring in infrastructure costs when the deployment is not being used. It destroys the NAT used and the VPC Endpoints. To be able to use the deployment again just run "terraform apply -var-file=vars/databricks.tfvars"
+
+These scripts must be run from the root folder.
 
 ## To take into account
 
@@ -109,6 +126,15 @@ To take into account:
 
 - Adding Private Links to be able to implement communications through private channels (please note that even when using public channels the communication is encrypted)
 - Add SSO (Single Sign-on)
+
+## Troubleshooting
+
+- It is important to personalize the variables used well, there can be conflicts with the names because AWS needs the names of some resources to be globally unique. If you get an error when deploying, check the error is not due to a name conflict of the type: "bucket already exists".
+- When destroying the infrastructure, the file resource we use to contain an init script for the cluster can fail to be deleted. Run the following command to remove it from state management and try to destroy the infrastructure again:
+
+```bash
+terraform state rm module.databricks_management.databricks_dbfs_file.core_site_config
+```
 
 ## License
 

@@ -3,10 +3,13 @@ data "aws_iam_policy_document" "access_log_bucket" {
   statement {
     sid       = "listBucket"
     effect    = "Allow"
-    resources = [var.s3_databricks_log_bucket_arn]
+    resources = ["${var.s3_databricks_log_bucket_arn}*"]
 
     actions = [
-      "s3:ListBucket"
+      "s3:ListBucket",
+      "s3:GetBucketLocation",
+      "s3:ListMultipartUploadParts",
+      "s3:ListBucketMultipartUploads"
     ]
   }
 
@@ -18,10 +21,11 @@ data "aws_iam_policy_document" "access_log_bucket" {
     ]
 
     actions = [
-      "s3:GetObject",
       "s3:PutObject",
+      "s3:GetObject",
       "s3:DeleteObject",
-      "s3:PutObjectAcl"
+      "s3:PutObjectAcl",
+      "s3:AbortMultipartUpload"
     ]
   }
 }

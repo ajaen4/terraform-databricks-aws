@@ -87,5 +87,6 @@ variable "datalake_client_side_enc" {
 }
 
 variable "token_lifetime_seconds" {
-  type = number
+  description = "Tokens lifetime before they must be redeployed to update their values"
+  type        = number
 }
